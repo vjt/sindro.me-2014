@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * 
+ * There are no secret messages here :-) for some fun, have a look at http://segmentation-fault.core-dumped.info/
+ *
+ * - vjt
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from sindro.me/2008/2/15/10-5-2-odissey-a-small-journey-in-mac-os-x-services-and-components by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:23:01 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<title>sindro&#x00b7;me |  10.5.2 Odissey: a small journey in Mac OS X services and components </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content="(C) 2009 Marcello Barnaba &lt;vjt&#x40;openssl.it&gt;" />
+<meta name="description" content=" 10.5.2 Odissey: a small journey in Mac OS X services and components | Well, I&#8217;m really happy with OSX 10.5.2. Even I&#8217;m not the one that blamed Apple for the translucent menu bar that everyone dislikes.. well, I like it. I don&#8217;t care about the TM menu bar tool, because I haven&#8217;t bought (yet) the nifty Time Capsule, I like the spinner in the Airport menu and, most of all, I really like the updates to the BluetoothSCOAudioDriver.kext that drives my bluetooth headset.	Spotlight also feels faster and faster on every upgrade, and I&#8217;m a heavy spotlight user, so this makes me really happy. Thanks Apple engineers!	Back to the topic: why odissey? Because as per my battery hints, I managed to make my MacBook2,1 SHUT DOWN while at 74% of the &#8220;Writing files&#8221; phase of the combo update&#8230; resulting in a completely broken system, as every geek could imagine :). Apple updated some libraries, and upon reboot simply nothing worked, and the darwin console was filled with lots of error messages. " />
+<meta name="keywords" content=" apple,disaster recovery,internals,mac os,marcello,barnaba,blog,vjt,vjt@openssl.it,marcello.barnaba@gmail.com,ruby,rails,javascript,jquery,prototype,html,xhtml,programming,web,web2.0,technology,42,social,media,networking" />
+
+<link rel="shortcut icon" type="image/x-icon" href="../../../images/favicon.ico" />
+
+<!--script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAuWJufAKiIzBzAamZSsh2pRS1dYRPa35R5NeEJ7meGaq0OvPiHhQ3QalxlO5u0yKSQjKIMxYmX98B5A"></script-->
+<!--script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script-->
+
+<script type="text/javascript">
+  // google.load('jquery', '1.3.1');
+
+  /* Disabled June 1, 2015. Cookies? Hassles.
+  google.setOnLoadCallback(function() {
+    try {
+      var pageTracker = _gat._getTracker("UA-7522463-2");
+      pageTracker._trackPageview();
+    } catch(err) {}
+  });
+
+  var addthis_pub = "vjti";
+  var addthis_brand = 'sindro&#x00b7;me';
+  var addthis_header_color = "#cccccc";
+  var addthis_header_background = "#000000";
+  var addthis_options = 'twitter, facebook, google, linkedin, reddit, email, more';
+  var addthis_hover_delay = 420;
+  */
+
+</script>
+
+<!-- script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script -->
+
+<link href="../../../stylesheets/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../../../stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+
+
+<link href="http://feeds2.feedburner.com/sindrome" rel="alternate" type="application/atom+xml" title="Articles" />
+<link href="http://feeds2.feedburner.com/sindrome_comments" rel="alternate" type="application/atom+xml" title="Comments" />
+
+</head>
+<body>
+  <div id="header">
+    <div class="inside">
+      <h2><a href="../../../index.html">sindro&#x00b7;me</a></h2>
+      <p class="description">just another drop in the ocean</p>
+
+      <!--div class="search">
+        <form action="/search" method="get">
+          <input type="text" name="q" onfocus="this.value = ''" value="search articles..." />
+          <input type="image" src="/images/submit.gif" />
+        </form>
+      </div-->
+      <div class="clear"> </div>
+
+    </div>
+  </div>
+
+  <div id="primary" class="single-post">
+
+  <div class="inside">
+
+    <div class="primary">
+      <h1>10.5.2 Odissey: a small journey in Mac OS X services and components</h1>
+      <p>Well, I&#8217;m really happy with <span class="caps">OSX 10</span>.5.2. Even I&#8217;m not the one that blamed Apple for the translucent menu bar that everyone dislikes.. well, I like it. I don&#8217;t care about the TM menu bar tool, because I haven&#8217;t bought (yet) the nifty Time Capsule, I like the spinner in the Airport menu and, most of all, I really like the updates to the <code>BluetoothSCOAudioDriver.kext</code> that drives my bluetooth headset.</p>
+
+
+	<p>Spotlight also feels faster and faster on every upgrade, and I&#8217;m a heavy spotlight user, so this makes me really happy. Thanks Apple engineers!</p>
+
+
+	<p>Back to the topic: why odissey? Because as per <a href="../../1/31/how-to-keep-your-apple-notebook-battery-healthy.html">my battery hints</a>, I managed to make my MacBook2,1 <span class="caps">SHUT DOWN</span> while at 74% of the &#8220;Writing files&#8221; phase of the combo update&#8230; resulting in a completely broken system, as every geek could imagine :). Apple updated some libraries, and upon reboot simply nothing worked, and the darwin console was filled with <b>lots</b> of error messages.</p>
+
+
+	<p><span id="continue"></span>
+The standard apple fanb<code>^W</code>user would have simply archived and installed his system, but hey, I&#8217;m a proud geek! I know from experience that disaster recovery situations are the best ones to learn something about an operating system, because you have to help the system boot up, bringing services up by hand, and find some way to re-apply the combo update without using the easy Aqua interface.</p>
+
+
+	<p>Luckily enough, on <span class="caps">OSX</span> every <span class="caps">GUI</span> has its <span class="caps">CLI</span> counterpart, following the best &#8220;UNIX guidelines&#8221; of interest separation and well designed architecture. Furthermore, <span class="caps">OSX</span> takes this approach one step further, following the best software engineering principles, where functionalities are implemented in Frameworks and both the <span class="caps">GUI</span> and <span class="caps">CLI</span> interfaces use it. Well done!</p>
+
+
+	<p>The odissey started with a <code>?-S</code> to boot in single user mode, a <code>/sbin/fsck -fy</code>, and a <code>/sbin/mount -uw /</code> to get a writable root. I started directly with a <code>hdiutil attach -noverify -verbose -mount required /Users/vjt/Downloads/MacOSXUpdCombo10.5.2.dmg</code> in order to mount the update disk image, but it failed because the <code>diskarbitrationd</code> daemon wasn&#8217;t running. So, i fired up <code>launchctl</code> and issued <code>load /System/Librar/LaunchDaemons/com.apple.diskarbitrationd.plist</code>, when I discovered that it needed both the <code>configd</code> daemon and the <code>notifyd</code> daemon, so I loaded them up both via launchctl and.. <span class="caps">YAY</span>! The disk image was correctly mounted in <code>/Volumes/Mac OS X Update Combined</code>!</p>
+
+
+Here things started to complicate a bit, because an easy task like issuing <code>installer -package MacOSXUpdCombo10.5.2.pkg -target /</code> failed with
+	<blockquote>
+		<p><code>NSInvalidArgumentException</code> in <code>[IFRunnerProxy requestKeyForRights:askUser:] unrecognized selector sent to instance 0x79ac50</code>.</p>
+	</blockquote>
+
+
+	<p>Well, here the Objective-C method was pretty self-explaining, the installer was trying to ask the user permission to install the package. That&#8217;s quite strange, because i was running the <code>installer</code> command as root, so no request should have been asked. I started scratching my head, and thought about the <code>DirectoryServices</code>, maybe because they were unavailable &#8220;something wrong&#8221;(tm) was happening?</p>
+
+
+	<p>OK, let&#8217;s try injecting the <code>com.apple.DirectoryServices</code> property list into <code>launchd</code>.. it didn&#8217;t work and <code>dyld</code> spit out this enlightening error message:</p>
+
+
+	<blockquote>
+		<p><code>
+  com.apple.DirectoryServices[11980]: dyld: lazy symbol binding 
+    failed: Symbol not found: _res_interrupt_requests_enable 
+  voyager com.apple.DirectoryServices[11980]:   Referenced from:
+    /usr/sbin/DirectoryService
+  com.apple.DirectoryServices[11980]:   Expected in:
+    /usr/lib/libresolv.9.dylib
+</code></p>
+	</blockquote>
+
+
+	<p><span class="caps">ARGH</span>! Something has changed into libresolv! I was having 10.5.1&#8217;s DirectoryServices.. with 10.5.2&#8217;s libresolv! Gotta restore the old version to make DS run. I first tried with a raw <code>netcat</code> network copy from another 10.5.1 box, but with my surprise the three-way handshake wasn&#8217;t completed between the two endpoints so no data could be transferred. Phew.</p>
+
+
+	<p>But luckily, because i already brought up the <code>diskarbitration</code> daemon, I could easily put the library on an <span class="caps">USB</span> storage device, plug it in and have it mounted in /Volumes. It did work and Directory Services were up&#38;running.. but still the same ugly <code>NSInvalidArgumentException</code> error when launching the <code>installer</code> utility. Sigh. :(</p>
+
+
+	<p>At this point, I gave up because my journey had been interesting enough and I had a really more confortable way to fix up my problem: an <span class="caps">USB</span>-attached hard disk with a vanilla Leopard installation, from which i could boot up my MacBook, double click the disk image from the Finder and lazily launch an <code>installer -target /Volumes/disk0 -package /Volumes/Mac OS X Update Combined/MacOSXUpdCombo10.5.2.pkg</code> to re-run all the upgrade procedures that would fix my Leopard installation. So i followed this path, because I had some work to do and could not perseverate in my geeky journey with the Darwin console, even if it had been really entertaining. :)</p>
+
+
+	<p>After installer completed its job, I rebooted and a shiny new 10.5.2 greeted me with the usual Mac <span class="caps">OS X</span> login window that on my box sports the &#8220;All your base are belong to us&#8221; slogan ;).</p>
+
+
+	<p>Hope you enjoyed this journey as I did, and if you&#8217;re a Linux fanb^Wuser don&#8217;t underestimate the cleaniness and cleverness of Mac <span class="caps">OS X</span> that every Apple geek tries to share with you!</p>
+
+      <p class="share-article"><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</p>
+
+      <div class="navigation">
+        <div class="previous">
+        
+          &lt;&lt;&lt; <a href="../14/google-maps-part-i-of-the-googling.html" title="PREV">PREV</a>
+        
+        </div>
+        <div class="next">
+        
+          <a href="../../5/3/we-still-can-do-it.html" title="NEXT">NEXT</a> &gt;&gt;&gt;
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="secondary">
+      <div id="share-icons">
+<span><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</span>
+<span>
+<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml"><img src="../../../images/icon-feed.png" alt="RSS"/></a>&nbsp;<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml">Subscribe to sindro&#x00b7;me</a></span>
+<span>
+<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="_blank"><img src="../../../images/icon-email.png" alt="E-Mail"/></a>&nbsp;<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="blank">Subscribe via e-mail</a></span>
+<span>
+<a href="../../../marcello-barnaba.html"><img src="../../../images/question-mark.jpg" alt="bio" /></a>&nbsp;<a href="../../../marcello-barnaba.html">About the author</a></span>
+</div>
+<div id="license">
+<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-sa/3.0/us/88x31.png" /></a></div>
+
+      <h2>About this entry</h2>
+      <div class="featured">
+        <p>You&rsquo;re currently reading &ldquo;<em>10.5.2 Odissey: a small journey in Mac OS X services and components</em>&rdquo;, an entry on sindro.me</p>
+        <dl>
+          <dt>Published:</dt>
+          <dd>02.15.08 / 20PM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Updated:</dt>
+          <dd>02.19.09 / 14PM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Sections:</dt>
+          <dd>
+            
+              <a class="selected" href="../../../number-42.html" title="number 42">number 42</a>
+            
+          </dd>
+        </dl>
+        
+        <dl>
+          <dt>Tags:</dt>
+          <dd class="tags">
+            
+              <a href="../../../tags/apple.html" rel="tag" title="apple">apple</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/disaster%20recovery.html" rel="tag" title="disaster recovery">disaster recovery</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/internals.html" rel="tag" title="internals">internals</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/mac%20os.html" rel="tag" title="mac os">mac os</a>
+              
+            
+          </dd>
+        </dl>
+        
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- [END] #primary -->
+
+<div id="secondary">
+  <div class="inside">
+    <div class="comment-head">
+      <div class="comment-icon"><!-- credit: http://tancredi.co.uk --></div>
+      <h2>2 comments</h2>
+    </div>
+
+    
+    <ol id="comments">
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="sukren" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=d41d8cd98f00b204e9800998ecf8427e&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              sukren
+            
+          </span>
+          <span class="date">02.17.08 / 19PM</span>
+        </cite>
+        <div class="content">
+          <p>e quando uno si appresta a fare un massive update usando solo la batteria deve essere per forza un genio del male &#8230;tipo Skeleton di Hi-Man</p>
+
+
+	<p>B? il lato positivo ? che se dovesse succede a noi sappiamo gi? dove andare a leggere e ti sei gi? sbattuto tu per noi&#8230;.gratis&#8230;
+Molto gentile&#8230;MAWHAHAAHAWHAWHAHW</p>
+
+
+	<p>(cmq per un hd firewire 800 ci vuole il cavo 9-9, x il 400 6-6 ..asd)</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="vjt" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=b9896d170716175a070c8c03cda3b97f&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              vjt
+            
+          </span>
+          <span class="date">02.17.08 / 20PM</span>
+        </cite>
+        <div class="content">
+          <p>beh, son curioso, lo sai.</p>
+
+
+	<p>i disaster recovery sono un&#8217;ottima occasione per imparare qualcosa riguardo gli internals di un OS, con Linux mi e` successo parecchie volte.</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+    </ol>
+      
+    
+  </div>
+</div>
+
+<div id="ancillary">
+  <div class="inside">
+
+    <div class="block first">
+  <h2><a href="../../../marcello-barnaba.html">About</a></h2>
+  <p>This is <a href="../../../marcello-barnaba.html">sindro.me</a>, a weblog by <a href="../../../marcello-barnaba.html">Marcello Barnaba</a> (<a href="http://twitter.com/vjt"><em>@vjt</em></a>) about technology, ruby, development, software, the internet, entertainment, politics, sociology, and the answer to Life, Universe, and Everything (42).</p>
+
+  <h2>Links</h2>
+  <ul class="counts">
+    <li><a href="http://segmentation-fault.core-dumped.info/">Segmentation fault (core dumped)</a></li>
+    <li><a href="http://www.linkedin.com/in/marcellobarnaba" target="_blank">LinkedIn</a></li>
+    <li><a href="http://www.linkedin.com/profile/pdf?id=18152447&amp;pdfFileName=MarcelloBarnaba-Resume&amp;disablePdfCompression=true">Resum&egrave;</a></li>
+    <li><a href="http://github.com/vjt" target="_blank">github</a></li>
+    <li><a href="http://sourceforge.net/users/vjt" target="_blank">sourceforge profile</a></li>
+    <li><a href="https://plus.google.com/107382538213680942210?rel=author" target="_blank">google+</a></li>
+    <li><a href="https://facebook.com/vjt.rb" target="_blank">facebook</a></li>
+    <li><a href="http://delicious.com/vjt" target="_blank">delicious</a></li>
+    <li><a href="http://devjt.deviantart.com/" target="_blank">deviantArt</a></li>
+    <li><a href="http://last.fm/user/vjt" target="_blank">last.fm</a></li>
+    <li><a href="http://en.wikipedia.org/wiki/User:Vjt" target="_blank">en.wikipedia user page</a></li>
+    <li><a href="http://barnaba.openssl.it/" target="_blank">historical college projects</a></li>
+    <hr/>
+    <li><a href="http://www.ifad.org/">Work - IFAD</a></li>
+    <li><a href="http://antifork.org/" target="_blank">Hacks - antifork (outdated)</a></li>
+  </ul>
+</div>
+
+        <div class="block">
+      <h2>Recent articles</h2>
+      <ul class="dates">
+        
+          <li><a href="../../../2014/9/15/pallido-puntolino-azzurro-radio.html"><span class="date">09.14</span> Pallido Puntolino Azzurro (Radio)</a></li>
+        
+          <li><a href="../../../2014/7/30/avevo-un-amico-pittore.html"><span class="date">07.14</span> Avevo un amico pittore</a></li>
+        
+          <li><a href="../../../2014/7/1/the-answer-to-life-universe-and-everything.html"><span class="date">07.14</span> The answer to Life, Universe and Everything</a></li>
+        
+          <li><a href="../../../2014/6/23/science-and-religion-it-doesn-t-work.html"><span class="date">06.14</span> Science and Religion: it doesn't work</a></li>
+        
+          <li><a href="../../../2014/2/28/il-vero-sistemista.html"><span class="date">02.14</span> Il vero sistemista</a></li>
+        
+          <li><a href="../../../2014/2/28/goto-fail.html"><span class="date">02.14</span> goto fail;</a></li>
+        
+          <li><a href="../../../2013/12/1/this-weekend-i-didn-t-code.html"><span class="date">12.13</span> This weekend I didn't code</a></li>
+        
+          <li><a href="../../../2011/9/12/install-node-js-via-apt-on-debian-squeeze.html"><span class="date">09.11</span> Install node.js via APT on Debian Squeeze</a></li>
+        
+      </ul>
+    </div>
+
+          <div class="block">
+        <h2>Categories</h2>
+        <ul class="counts">
+        
+          <li><a href="../../../index.html"><span class="count">64</span>everything</a></li>
+        
+          <li><a href="../../../development.html"><span class="count">28</span>development</a></li>
+        
+          <li><a href="../../../politics.html"><span class="count">13</span>politics</a></li>
+        
+          <li><a href="../../../number-42.html"><span class="count">29</span>number 42</a></li>
+        
+        </ul>
+      </div>
+
+    
+    <div class="clear"></div>
+  </div>
+</div>
+
+
+  <div id="footer">
+    <div class="inside">
+      <p class="copyright">Hemingway theme &copy;2003-2005 Kyle Neath</p>
+      <div class="glider"><a href="http://catb.org/jargon" target="blank"><img src="../../../images/glider.png" alt="hacker's glider" title="hacker's glider"/></a></div>
+      <p class="attributes">
+        <a href="http://validator.w3.org/check/referer" target="_blank">Valid XHTML 1.0 Transitional</a>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer/" target="_blank">Valid CSS <sub>(except for an IE hack)</sub></a>
+      </p>
+    </div>
+  </div>
+
+  <div id="print-footer">
+  
+    <p>This article is (C) 2010 Marcello Barnaba &lt;<a href="mailto:vjt@openssl.it">vjt@openssl.it</a>&gt;, released under a Creative Commons BY-SA license.</p>
+    <p> It was printed from <a href="../../../index.html">sindro.me</a> and is available via the following link: &laquo;<a href="10-5-2-odissey-a-small-journey-in-mac-os-x-services-and-components.html" title="10.5.2 Odissey: a small journey in Mac OS X services and components">10.5.2 Odissey: a small journey in Mac OS X services and components</a>&raquo;</p>
+  
+  </div>
+
+  <!-- script type="text/javascript" src="http://antani.r13.railsrumble.com/assets/hermes.js"></script-->
+  
+</body>
+
+<!-- Mirrored from sindro.me/2008/2/15/10-5-2-odissey-a-small-journey-in-mac-os-x-services-and-components by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:23:03 GMT -->
+</html>

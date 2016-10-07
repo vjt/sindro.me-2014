@@ -1,0 +1,444 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * 
+ * There are no secret messages here :-) for some fun, have a look at http://segmentation-fault.core-dumped.info/
+ *
+ * - vjt
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from sindro.me/2011/9/12/install-node-js-via-apt-on-debian-squeeze by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:19:53 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<title>sindro&#x00b7;me |  Install node.js via APT on Debian Squeeze </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content="(C) 2009 Marcello Barnaba &lt;vjt&#x40;openssl.it&gt;" />
+<meta name="description" content=" Install node.js via APT on Debian Squeeze |  " />
+<meta name="keywords" content=" debian,nodejs,sysadm,marcello,barnaba,blog,vjt,vjt@openssl.it,marcello.barnaba@gmail.com,ruby,rails,javascript,jquery,prototype,html,xhtml,programming,web,web2.0,technology,42,social,media,networking" />
+
+<link rel="shortcut icon" type="image/x-icon" href="../../../images/favicon.ico" />
+
+<!--script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAuWJufAKiIzBzAamZSsh2pRS1dYRPa35R5NeEJ7meGaq0OvPiHhQ3QalxlO5u0yKSQjKIMxYmX98B5A"></script-->
+<!--script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script-->
+
+<script type="text/javascript">
+  // google.load('jquery', '1.3.1');
+
+  /* Disabled June 1, 2015. Cookies? Hassles.
+  google.setOnLoadCallback(function() {
+    try {
+      var pageTracker = _gat._getTracker("UA-7522463-2");
+      pageTracker._trackPageview();
+    } catch(err) {}
+  });
+
+  var addthis_pub = "vjti";
+  var addthis_brand = 'sindro&#x00b7;me';
+  var addthis_header_color = "#cccccc";
+  var addthis_header_background = "#000000";
+  var addthis_options = 'twitter, facebook, google, linkedin, reddit, email, more';
+  var addthis_hover_delay = 420;
+  */
+
+</script>
+
+<!-- script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script -->
+
+<link href="../../../stylesheets/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../../../stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+
+
+<link href="http://feeds2.feedburner.com/sindrome" rel="alternate" type="application/atom+xml" title="Articles" />
+<link href="http://feeds2.feedburner.com/sindrome_comments" rel="alternate" type="application/atom+xml" title="Comments" />
+
+</head>
+<body>
+  <div id="header">
+    <div class="inside">
+      <h2><a href="../../../index.html">sindro&#x00b7;me</a></h2>
+      <p class="description">just another drop in the ocean</p>
+
+      <!--div class="search">
+        <form action="/search" method="get">
+          <input type="text" name="q" onfocus="this.value = ''" value="search articles..." />
+          <input type="image" src="/images/submit.gif" />
+        </form>
+      </div-->
+      <div class="clear"> </div>
+
+    </div>
+  </div>
+
+  <div id="primary" class="single-post">
+
+  <div class="inside">
+
+    <div class="primary">
+      <h1>Install node.js via APT on Debian Squeeze</h1>
+      <p>Abstract: add <a href="http://www.debian.org/releases/sid/"><span class="caps">SID</span></a> APT source, configure <a href="http://wiki.debian.org/AptPreferences"><span class="caps">APT</span> Pinning</a> to give <code>squeeze</code> packages priority over <code>SID</code> ones, rebuild the <code>nodejs</code> package under <code>squeeze</code>.</p>
+
+
+	<ul>
+	<li>Add <span class="caps">SID APT</span> source by creating <code>/etc/apt/sources.list.d/sid.list</code> (use your <a href="http://www.debian.org/mirror/">nearest mirror</a>):</li>
+	</ul>
+
+
+<pre>
+deb http://ftp.us.debian.org/debian/ sid main
+deb-src http://ftp.us.debian.org/debian/ sid main
+</pre>
+
+	<ul>
+	<li>Configure <span class="caps">APT</span> pinning by creating <code>/etc/apt/preferences.d/sid</code>:</li>
+	</ul>
+
+
+<pre>
+Package: *
+Pin: release a=unstable
+Pin-Priority: 50
+</pre>
+
+	<ul>
+	<li>Install the latest version of <code>libv8</code> manually, <code>libv8-3.8.9.20</code> at the time of writing this:</li>
+	</ul>
+
+
+<pre>
+apt-get install libv8-3.8.9.20
+</pre>
+
+	<ul>
+	<li>Download the nodejs package sources, dependencies and build them:</li>
+	</ul>
+
+
+<pre>
+cd
+apt-get source nodejs
+apt-get build-dep nodejs
+cd nodejs-*
+debuild -nc -uc
+</pre>
+
+	<ul>
+	<li>If you encounter <code>build-dependency</code> errors, you should try first to lower the dependency in <code>debian/control</code>, both in <code>Build-Depends</code> and in <code>Depends</code> and re-run <code>debuild</code>.
+If the build fails (e.g. with <code>undefined reference to `ev_run'</code>) the previous version is missing required functions. So, you must install the updated versions of the required dependencies (e.g. <code>libev4</code>) from <code>sid</code>, using <code>apt-get install name=version</code> e.g. <code>libev4=1:4.11-1</code>. I suggest this because you&#8217;ll have to manually update packages installed from <code>sid</code>, so the lesser, the best.</li>
+	</ul>
+
+
+	<ul>
+	<li>Install the generated package</li>
+	</ul>
+
+
+<pre>
+dpkg -i nodejs_*.deb nodejs-dev*.deb
+</pre>
+
+	<ul>
+	<li>Profit :-)</li>
+	</ul>
+
+      <p class="share-article"><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</p>
+
+      <div class="navigation">
+        <div class="previous">
+        
+          &lt;&lt;&lt; <a href="../../7/7/binding-port-80-for-your-development-application-server.html" title="PREV">PREV</a>
+        
+        </div>
+        <div class="next">
+        
+          <a href="../../../2013/12/1/this-weekend-i-didn-t-code.html" title="NEXT">NEXT</a> &gt;&gt;&gt;
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="secondary">
+      <div id="share-icons">
+<span><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</span>
+<span>
+<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml"><img src="../../../images/icon-feed.png" alt="RSS"/></a>&nbsp;<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml">Subscribe to sindro&#x00b7;me</a></span>
+<span>
+<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="_blank"><img src="../../../images/icon-email.png" alt="E-Mail"/></a>&nbsp;<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="blank">Subscribe via e-mail</a></span>
+<span>
+<a href="../../../marcello-barnaba.html"><img src="../../../images/question-mark.jpg" alt="bio" /></a>&nbsp;<a href="../../../marcello-barnaba.html">About the author</a></span>
+</div>
+<div id="license">
+<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-sa/3.0/us/88x31.png" /></a></div>
+
+      <h2>About this entry</h2>
+      <div class="featured">
+        <p>You&rsquo;re currently reading &ldquo;<em>Install node.js via APT on Debian Squeeze</em>&rdquo;, an entry on sindro.me</p>
+        <dl>
+          <dt>Published:</dt>
+          <dd>09.12.11 / 12PM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Updated:</dt>
+          <dd>10.09.12 / 15PM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Sections:</dt>
+          <dd>
+            
+              <a class="selected" href="../../../development.html" title="development">development</a>
+            
+          </dd>
+        </dl>
+        
+        <dl>
+          <dt>Tags:</dt>
+          <dd class="tags">
+            
+              <a href="../../../tags/debian.html" rel="tag" title="debian">debian</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/nodejs.html" rel="tag" title="nodejs">nodejs</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/sysadm.html" rel="tag" title="sysadm">sysadm</a>
+              
+            
+          </dd>
+        </dl>
+        
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- [END] #primary -->
+
+<div id="secondary">
+  <div class="inside">
+    <div class="comment-head">
+      <div class="comment-icon"><!-- credit: http://tancredi.co.uk --></div>
+      <h2>5 comments</h2>
+    </div>
+
+    
+    <ol id="comments">
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="Paul" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=b30a7c139117a36a3f2cc2958942847e&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              <a href="http://vorb.de/" target="_blank">Paul</a>
+            
+          </span>
+          <span class="date">06.01.12 / 12PM</span>
+        </cite>
+        <div class="content">
+          <p>Your article looks like the solution for my problem, but I’ve got problems trying to install nodejs with this technique. There’s no package <em>libv8-3.1.8.22</em> at the moment. There are several other packages though:</p>
+
+
+	<ul>
+	<li>libv8-2.2.24</li>
+		<li>libv8-3.7.12.22</li>
+		<li>libv8-3.8.9.20</li>
+		<li>libv8-3.4.14.21</li>
+	</ul>
+
+
+	<p>They either have no installation candidate, or the following message is returned when building the dependencies with <code>apt-get build-dep nodejs</code>:</p>
+
+
+	<blockquote>
+		<p>Build-Depends dependency for nodejs cannot be satisfied because no available versions of package libv8-dev can satisfy version requirements</p>
+	</blockquote>
+
+
+	<p>Do you have got any idea what I could do now?</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="Marcello Barnaba" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=b9896d170716175a070c8c03cda3b97f&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              <a href="../../../index.html" target="_blank">Marcello Barnaba</a>
+            
+          </span>
+          <span class="date">09.17.12 / 17PM</span>
+        </cite>
+        <div class="content">
+          <p>Hey Paul,</p>
+
+
+	<p>you should always use the latest version of libv8 available at the moment, because (like Chrome) it is a very rapidly moving target.</p>
+
+
+	<p>Moreover, when backporting software to stable debian releases, you may need to amend <code>debian/control</code> lowering the required versions to the highest available in your stable debian system. I have updated the article with these instructions.</p>
+
+
+	<p>Of course, this can fail, and if it does, you&#8217;ll need to backport the required dependency library as well, repeating the whole cycle.</p>
+
+
+	<p>Have fun! :-)</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="Mark" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=4f4ac498285e59d9d9da2a4eb53a85b4&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              Mark
+            
+          </span>
+          <span class="date">03.09.13 / 21PM</span>
+        </cite>
+        <div class="content">
+          <p>Hi, I put together a build system to create debian packages for official node.js releases. It&#8217;s quite primitive and not what the Debian maintainers have in mind, but maybe someone will find it useful:</p>
+
+
+	<p><a href="https://github.com/mark-webster/node-debian">https://github.com/mark-webster/node-debian</a></p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="Cal Leeming" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=c9f7ba922b3d797fc99f5e25ee80e5d8&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              Cal Leeming
+            
+          </span>
+          <span class="date">05.30.13 / 16PM</span>
+        </cite>
+        <div class="content">
+          <p>Finally, after 30 minutes of searching, a simple and effective guide to apt pinning. Thank you!!!</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="john" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=eaf671cf8862a00254bafd203a940c40&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              john
+            
+          </span>
+          <span class="date">06.23.13 / 00AM</span>
+        </cite>
+        <div class="content">
+          <p>This looks like it might work for me, but during the debuild utility mine stopped, saying: &#8220;debuild: fatal error at line 1357&#8221; 
+then, I tried installing the libev4, but it said &#8220;libev4 is already the newest version&#8221;.</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+    </ol>
+      
+    
+  </div>
+</div>
+
+<div id="ancillary">
+  <div class="inside">
+
+    <div class="block first">
+  <h2><a href="../../../marcello-barnaba.html">About</a></h2>
+  <p>This is <a href="../../../marcello-barnaba.html">sindro.me</a>, a weblog by <a href="../../../marcello-barnaba.html">Marcello Barnaba</a> (<a href="http://twitter.com/vjt"><em>@vjt</em></a>) about technology, ruby, development, software, the internet, entertainment, politics, sociology, and the answer to Life, Universe, and Everything (42).</p>
+
+  <h2>Links</h2>
+  <ul class="counts">
+    <li><a href="http://segmentation-fault.core-dumped.info/">Segmentation fault (core dumped)</a></li>
+    <li><a href="http://www.linkedin.com/in/marcellobarnaba" target="_blank">LinkedIn</a></li>
+    <li><a href="http://www.linkedin.com/profile/pdf?id=18152447&amp;pdfFileName=MarcelloBarnaba-Resume&amp;disablePdfCompression=true">Resum&egrave;</a></li>
+    <li><a href="http://github.com/vjt" target="_blank">github</a></li>
+    <li><a href="http://sourceforge.net/users/vjt" target="_blank">sourceforge profile</a></li>
+    <li><a href="https://plus.google.com/107382538213680942210?rel=author" target="_blank">google+</a></li>
+    <li><a href="https://facebook.com/vjt.rb" target="_blank">facebook</a></li>
+    <li><a href="http://delicious.com/vjt" target="_blank">delicious</a></li>
+    <li><a href="http://devjt.deviantart.com/" target="_blank">deviantArt</a></li>
+    <li><a href="http://last.fm/user/vjt" target="_blank">last.fm</a></li>
+    <li><a href="http://en.wikipedia.org/wiki/User:Vjt" target="_blank">en.wikipedia user page</a></li>
+    <li><a href="http://barnaba.openssl.it/" target="_blank">historical college projects</a></li>
+    <hr/>
+    <li><a href="http://www.ifad.org/">Work - IFAD</a></li>
+    <li><a href="http://antifork.org/" target="_blank">Hacks - antifork (outdated)</a></li>
+  </ul>
+</div>
+
+        <div class="block">
+      <h2>Recent articles</h2>
+      <ul class="dates">
+        
+          <li><a href="../../../2014/9/15/pallido-puntolino-azzurro-radio.html"><span class="date">09.14</span> Pallido Puntolino Azzurro (Radio)</a></li>
+        
+          <li><a href="../../../2014/7/30/avevo-un-amico-pittore.html"><span class="date">07.14</span> Avevo un amico pittore</a></li>
+        
+          <li><a href="../../../2014/7/1/the-answer-to-life-universe-and-everything.html"><span class="date">07.14</span> The answer to Life, Universe and Everything</a></li>
+        
+          <li><a href="../../../2014/6/23/science-and-religion-it-doesn-t-work.html"><span class="date">06.14</span> Science and Religion: it doesn't work</a></li>
+        
+          <li><a href="../../../2014/2/28/il-vero-sistemista.html"><span class="date">02.14</span> Il vero sistemista</a></li>
+        
+          <li><a href="../../../2014/2/28/goto-fail.html"><span class="date">02.14</span> goto fail;</a></li>
+        
+          <li><a href="../../../2013/12/1/this-weekend-i-didn-t-code.html"><span class="date">12.13</span> This weekend I didn't code</a></li>
+        
+          <li><a href="install-node-js-via-apt-on-debian-squeeze.html"><span class="date">09.11</span> Install node.js via APT on Debian Squeeze</a></li>
+        
+      </ul>
+    </div>
+
+          <div class="block">
+        <h2>Categories</h2>
+        <ul class="counts">
+        
+          <li><a href="../../../index.html"><span class="count">64</span>everything</a></li>
+        
+          <li><a href="../../../development.html"><span class="count">28</span>development</a></li>
+        
+          <li><a href="../../../politics.html"><span class="count">13</span>politics</a></li>
+        
+          <li><a href="../../../number-42.html"><span class="count">29</span>number 42</a></li>
+        
+        </ul>
+      </div>
+
+    
+    <div class="clear"></div>
+  </div>
+</div>
+
+
+  <div id="footer">
+    <div class="inside">
+      <p class="copyright">Hemingway theme &copy;2003-2005 Kyle Neath</p>
+      <div class="glider"><a href="http://catb.org/jargon" target="blank"><img src="../../../images/glider.png" alt="hacker's glider" title="hacker's glider"/></a></div>
+      <p class="attributes">
+        <a href="http://validator.w3.org/check/referer" target="_blank">Valid XHTML 1.0 Transitional</a>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer/" target="_blank">Valid CSS <sub>(except for an IE hack)</sub></a>
+      </p>
+    </div>
+  </div>
+
+  <div id="print-footer">
+  
+    <p>This article is (C) 2010 Marcello Barnaba &lt;<a href="mailto:vjt@openssl.it">vjt@openssl.it</a>&gt;, released under a Creative Commons BY-SA license.</p>
+    <p> It was printed from <a href="../../../index.html">sindro.me</a> and is available via the following link: &laquo;<a href="install-node-js-via-apt-on-debian-squeeze.html" title="Install node.js via APT on Debian Squeeze">Install node.js via APT on Debian Squeeze</a>&raquo;</p>
+  
+  </div>
+
+  <!-- script type="text/javascript" src="http://antani.r13.railsrumble.com/assets/hermes.js"></script-->
+  
+</body>
+
+<!-- Mirrored from sindro.me/2011/9/12/install-node-js-via-apt-on-debian-squeeze by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:19:54 GMT -->
+</html>

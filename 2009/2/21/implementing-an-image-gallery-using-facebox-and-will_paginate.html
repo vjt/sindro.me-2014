@@ -1,0 +1,429 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * 
+ * There are no secret messages here :-) for some fun, have a look at http://segmentation-fault.core-dumped.info/
+ *
+ * - vjt
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from sindro.me/2009/2/21/implementing-an-image-gallery-using-facebox-and-will_paginate by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:23:13 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<title>sindro&#x00b7;me |  Implementing an image gallery using facebox and will_paginate </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content="(C) 2009 Marcello Barnaba &lt;vjt&#x40;openssl.it&gt;" />
+<meta name="description" content=" Implementing an image gallery using facebox and will_paginate | On VisitaCSA we&#8217;re using defunkt&#8217;s facebox to show places images at large. Facebox is a great general-purpose lightbox, because it is fast, stable, is based on jQuery and has got a really clean API.	But we needed more than a simple display lightbox, because we wanted our users to navigate easily between all images, possibly without modifying facebox at all. The solution turned out to be pretty simple, thanks also to the will_paginate plugin we were already using. It all burns out to have:		A Photo model, instrumented with the has_attachment method		Resource routes for photos (map.resources :photos, :only =&gt; :show in config/routes.rb)		A show controller method in the PhotosController that calls .paginate with a :per_page argument of 1		An HTML view for the photo resource, that has pagination controls using the will_paginate helper		Some jQuery code hooks onto the pagination links and make the browser load via AJAX the next photo directly into the facebox.	 " />
+<meta name="keywords" content=" facebox,javascript,jquery,projects,ruby,will_paginate,marcello,barnaba,blog,vjt,vjt@openssl.it,marcello.barnaba@gmail.com,ruby,rails,javascript,jquery,prototype,html,xhtml,programming,web,web2.0,technology,42,social,media,networking" />
+
+<link rel="shortcut icon" type="image/x-icon" href="../../../images/favicon.ico" />
+
+<!--script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAuWJufAKiIzBzAamZSsh2pRS1dYRPa35R5NeEJ7meGaq0OvPiHhQ3QalxlO5u0yKSQjKIMxYmX98B5A"></script-->
+<!--script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script-->
+
+<script type="text/javascript">
+  // google.load('jquery', '1.3.1');
+
+  /* Disabled June 1, 2015. Cookies? Hassles.
+  google.setOnLoadCallback(function() {
+    try {
+      var pageTracker = _gat._getTracker("UA-7522463-2");
+      pageTracker._trackPageview();
+    } catch(err) {}
+  });
+
+  var addthis_pub = "vjti";
+  var addthis_brand = 'sindro&#x00b7;me';
+  var addthis_header_color = "#cccccc";
+  var addthis_header_background = "#000000";
+  var addthis_options = 'twitter, facebook, google, linkedin, reddit, email, more';
+  var addthis_hover_delay = 420;
+  */
+
+</script>
+
+<!-- script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script -->
+
+<link href="../../../stylesheets/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../../../stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+
+
+<link href="http://feeds2.feedburner.com/sindrome" rel="alternate" type="application/atom+xml" title="Articles" />
+<link href="http://feeds2.feedburner.com/sindrome_comments" rel="alternate" type="application/atom+xml" title="Comments" />
+
+</head>
+<body>
+  <div id="header">
+    <div class="inside">
+      <h2><a href="../../../index.html">sindro&#x00b7;me</a></h2>
+      <p class="description">just another drop in the ocean</p>
+
+      <!--div class="search">
+        <form action="/search" method="get">
+          <input type="text" name="q" onfocus="this.value = ''" value="search articles..." />
+          <input type="image" src="/images/submit.gif" />
+        </form>
+      </div-->
+      <div class="clear"> </div>
+
+    </div>
+  </div>
+
+  <div id="primary" class="single-post">
+
+  <div class="inside">
+
+    <div class="primary">
+      <h1>Implementing an image gallery using facebox and will_paginate</h1>
+      <p>On <a href="http://www.visitacsa.it/">VisitaCSA</a> we&#8217;re using <a href="http://errtheblog.com/">defunkt</a>&#8217;s <a href="http://famspam.com/facebox">facebox</a> to show <a href="http://www.visitacsa.it/luoghi/chiesa-di-santantonio">places images</a> at large. Facebox is a great general-purpose lightbox, because it is fast, stable, is based on <a href="http://jquery.com/">jQuery</a> and has got a really clean <span class="caps">API</span>.</p>
+
+
+	<p>But we needed more than a simple display lightbox, because we wanted our users to navigate easily between all images, possibly without modifying facebox at all. The solution turned out to be pretty simple, thanks also to the <a href="http://github.com/mislav/will_paginate/wikis">will_paginate</a> plugin we were already using. It all burns out to have:</p>
+
+
+	<ul>
+	<li>A Photo model, instrumented with the <code>has_attachment</code> method</li>
+		<li>Resource routes for photos (<code>map.resources :photos, :only =&gt; :show</code> in <code>config/routes.rb</code>)</li>
+		<li>A <code>show</code> controller method in the <code>PhotosController</code> that calls <code>.paginate</code> with a <code>:per_page</code> argument of <b>1</b></li>
+		<li>An <span class="caps">HTML</span> view for the photo resource, that has pagination controls using the <code>will_paginate</code> helper</li>
+		<li>Some jQuery code hooks onto the pagination links and make the browser load via <span class="caps">AJAX</span> the next photo directly into the facebox.</li>
+	</ul>
+
+
+	<p><a name="continue"></a></p>
+
+
+	<p>Here is the relevant code, simplified from what&#8217;s actually online, because the photo model is actually polymorphic (using <span class="caps">STI</span>) and many different collections are handled by the photos controller (photos, flyers, etc) for different models, with different thumbnails <b>:P</b>.</p>
+
+
+	<h2>Model [<code>app/models/photo.rb</code>]</h2>
+
+
+<pre><code>
+class Photo &lt; ActiveRecord::Base
+  has_attachment :storage =&gt; :file_system, :path_prefix =&gt; 'public/photos',
+    :processor =&gt; 'ImageScience', :thumbs =&gt; { :thumb =&gt; '600x800' }
+end
+</code></pre>
+
+	<h2>Controller [<code>app/controllers/photos_controller.rb</code>]</h2>
+
+
+<pre><code>
+class PhotosController &lt; ApplicationController
+  layout nil
+  before_filter :find_place
+
+  # The photo gallery core is here
+  def show
+    photo = Photo.find(params[:id])
+    page = params[:page] || @place.photos.index(photo) + 1
+    @photos = @place.photos.paginate(:per_page =&gt; 1, :page =&gt; page)
+    @photo = @photos.first
+  end
+
+  def find_place
+    @place = Place.find(params[:place_id])
+  end
+end
+</code></pre>
+
+	<h2>View [<code>app/views/photos/show.html.erb</code>]</h2>
+
+
+<pre><code>
+&lt;div class="photo"&gt;
+  &lt;div style="width: &lt;%= photo_width(@photo) %&gt;px; text-align: center;"&gt;
+    &lt;%= next_photo_link_for @photo, :in =&gt; @photos %&gt;
+  &lt;/div&gt;
+  &lt;p&gt;&lt;%=h @photo.title %&gt;&lt;/p&gt;
+  &lt;p&gt;
+  &lt;%= will_paginate @photos, :prev_label =&gt; '&amp;nbsp;', :next_label =&gt; '&amp;nbsp;' %&gt;
+  &lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+
+	<p>The <a href="http://imagesize.rubyforge.org/">image_size</a> gem is needed to correctly let facebox align itself to the center of the window.</p>
+
+
+	<h2>Helpers [app/helpers/photos_helper.rb and app/helpers/application_helper.rb]</h2>
+
+
+<pre><code>
+require 'image_size'
+
+module PhotosHelper
+  def next_photo_link_for(photo, options = {})
+    collection = options.delete(:in)
+
+    if collection &#38;&#38; collection.respond_to?(:next_page)
+      facebox_image_link_to photo, options.merge(:page =&gt; collection.next_page || 1)
+    else
+      image_tag photo.public_filename(:thumb, :alt =&gt; h(photo.title), :title =&gt; h(photo.title)
+    end
+  end
+
+  def photo_width(photo, thumb = nil)
+    width = ImageSize.new(File.read(photo.full_filename(thumb))).width rescue nil
+    return (width.nil? || width &lt; 370) ? 370 : width
+  end
+end
+
+module ApplicationHelper
+  def facebox_image_link_to(photo, thumb = nil, options = {})                                           
+    link_options = {:page =&gt; options.delete(:page)}
+    options.reverse_update(:title =&gt; h(photo.title), :alt =&gt; h(photo.title))                            
+
+    link_to(
+      image_tag(photo.public_filename(:thumb), options),
+      formatted_photo_path(photo, 'html', link_options),
+      :rel =&gt; 'facebox'                                                                                 
+    )
+  end 
+end
+</code></pre>
+
+	<p>The <a href="http://plugins.jquery.com/project/ScrollTo">scrollTo plugin</a> is used here to scroll the window view to the top of the facebox.</p>
+
+
+	<h2>Javascript [public/javascripts/application.js]</h2>
+
+
+<pre><code>
+$(document).ready(function() {
+
+  if ($('#facebox').length &gt; 0) {
+    $('#facebox div.pagination a, #facebox a[rel*=facebox]').live('click', function() {
+
+      $('#facebox .content').html('&lt;div class="loading"&gt;&lt;img src="'+$.facebox.settings.loadingImage+'"/&gt;&lt;/div&gt;');
+      $.get(this.href, null, function(data) { $.facebox.reveal(data); });
+
+      $.scrollTo('#facebox', {offset: -10, duration: 500});
+
+      return false;
+    });
+  }
+
+});
+</code></pre>
+
+	<p>Well, maybe I should to wrap up all this stuff in a simple-and-nice-to-use plugin, but it&#8217;s all built around reusable components, and the effort needed to keep it up-to-date is currently out of order for me because of time constraints. And, sincerely, I see little benefit in it. It&#8217;s a &#8220;paginate-with-one-item-per-page&#8221; hack, after all :).</p>
+
+
+	<p>Have fun!</p>
+
+      <p class="share-article"><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</p>
+
+      <div class="navigation">
+        <div class="previous">
+        
+          &lt;&lt;&lt; <a href="../20/the-blinking-border.html" title="PREV">PREV</a>
+        
+        </div>
+        <div class="next">
+        
+          <a href="../../3/2/notice-to-all-employees-5.html" title="NEXT">NEXT</a> &gt;&gt;&gt;
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="secondary">
+      <div id="share-icons">
+<span><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</span>
+<span>
+<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml"><img src="../../../images/icon-feed.png" alt="RSS"/></a>&nbsp;<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml">Subscribe to sindro&#x00b7;me</a></span>
+<span>
+<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="_blank"><img src="../../../images/icon-email.png" alt="E-Mail"/></a>&nbsp;<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="blank">Subscribe via e-mail</a></span>
+<span>
+<a href="../../../marcello-barnaba.html"><img src="../../../images/question-mark.jpg" alt="bio" /></a>&nbsp;<a href="../../../marcello-barnaba.html">About the author</a></span>
+</div>
+<div id="license">
+<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-sa/3.0/us/88x31.png" /></a></div>
+
+      <h2>About this entry</h2>
+      <div class="featured">
+        <p>You&rsquo;re currently reading &ldquo;<em>Implementing an image gallery using facebox and will_paginate</em>&rdquo;, an entry on sindro.me</p>
+        <dl>
+          <dt>Published:</dt>
+          <dd>02.22.09 / 00AM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Updated:</dt>
+          <dd>02.23.09 / 10AM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Sections:</dt>
+          <dd>
+            
+              <a class="selected" href="../../../development.html" title="development">development</a>
+            
+          </dd>
+        </dl>
+        
+        <dl>
+          <dt>Tags:</dt>
+          <dd class="tags">
+            
+              <a href="../../../tags/facebox.html" rel="tag" title="facebox">facebox</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/javascript.html" rel="tag" title="javascript">javascript</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/jquery.html" rel="tag" title="jquery">jquery</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/projects.html" rel="tag" title="projects">projects</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/ruby.html" rel="tag" title="ruby">ruby</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/will_paginate.html" rel="tag" title="will_paginate">will_paginate</a>
+              
+            
+          </dd>
+        </dl>
+        
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- [END] #primary -->
+
+<div id="secondary">
+  <div class="inside">
+    <div class="comment-head">
+      <div class="comment-icon"><!-- credit: http://tancredi.co.uk --></div>
+      <h2>1 comment</h2>
+    </div>
+
+    
+    <ol id="comments">
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="Gabriel Hubermann" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=bf265e12d1b5d72520b86543b4e5fd2e&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              <a href="http://hubermann.com/" target="_blank">Gabriel Hubermann</a>
+            
+          </span>
+          <span class="date">04.03.10 / 21PM</span>
+        </cite>
+        <div class="content">
+          <p>Hi, great job, but meaby you can use a fixed size with css (with and height ) for the images container , this remove the jump from one image to other in small screens. i see the example into a macbook 13&#8221; and jump the screen to the top when load a new image.</p>
+
+
+	<p>Greetings</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+    </ol>
+      
+    
+  </div>
+</div>
+
+<div id="ancillary">
+  <div class="inside">
+
+    <div class="block first">
+  <h2><a href="../../../marcello-barnaba.html">About</a></h2>
+  <p>This is <a href="../../../marcello-barnaba.html">sindro.me</a>, a weblog by <a href="../../../marcello-barnaba.html">Marcello Barnaba</a> (<a href="http://twitter.com/vjt"><em>@vjt</em></a>) about technology, ruby, development, software, the internet, entertainment, politics, sociology, and the answer to Life, Universe, and Everything (42).</p>
+
+  <h2>Links</h2>
+  <ul class="counts">
+    <li><a href="http://segmentation-fault.core-dumped.info/">Segmentation fault (core dumped)</a></li>
+    <li><a href="http://www.linkedin.com/in/marcellobarnaba" target="_blank">LinkedIn</a></li>
+    <li><a href="http://www.linkedin.com/profile/pdf?id=18152447&amp;pdfFileName=MarcelloBarnaba-Resume&amp;disablePdfCompression=true">Resum&egrave;</a></li>
+    <li><a href="http://github.com/vjt" target="_blank">github</a></li>
+    <li><a href="http://sourceforge.net/users/vjt" target="_blank">sourceforge profile</a></li>
+    <li><a href="https://plus.google.com/107382538213680942210?rel=author" target="_blank">google+</a></li>
+    <li><a href="https://facebook.com/vjt.rb" target="_blank">facebook</a></li>
+    <li><a href="http://delicious.com/vjt" target="_blank">delicious</a></li>
+    <li><a href="http://devjt.deviantart.com/" target="_blank">deviantArt</a></li>
+    <li><a href="http://last.fm/user/vjt" target="_blank">last.fm</a></li>
+    <li><a href="http://en.wikipedia.org/wiki/User:Vjt" target="_blank">en.wikipedia user page</a></li>
+    <li><a href="http://barnaba.openssl.it/" target="_blank">historical college projects</a></li>
+    <hr/>
+    <li><a href="http://www.ifad.org/">Work - IFAD</a></li>
+    <li><a href="http://antifork.org/" target="_blank">Hacks - antifork (outdated)</a></li>
+  </ul>
+</div>
+
+        <div class="block">
+      <h2>Recent articles</h2>
+      <ul class="dates">
+        
+          <li><a href="../../../2014/9/15/pallido-puntolino-azzurro-radio.html"><span class="date">09.14</span> Pallido Puntolino Azzurro (Radio)</a></li>
+        
+          <li><a href="../../../2014/7/30/avevo-un-amico-pittore.html"><span class="date">07.14</span> Avevo un amico pittore</a></li>
+        
+          <li><a href="../../../2014/7/1/the-answer-to-life-universe-and-everything.html"><span class="date">07.14</span> The answer to Life, Universe and Everything</a></li>
+        
+          <li><a href="../../../2014/6/23/science-and-religion-it-doesn-t-work.html"><span class="date">06.14</span> Science and Religion: it doesn't work</a></li>
+        
+          <li><a href="../../../2014/2/28/il-vero-sistemista.html"><span class="date">02.14</span> Il vero sistemista</a></li>
+        
+          <li><a href="../../../2014/2/28/goto-fail.html"><span class="date">02.14</span> goto fail;</a></li>
+        
+          <li><a href="../../../2013/12/1/this-weekend-i-didn-t-code.html"><span class="date">12.13</span> This weekend I didn't code</a></li>
+        
+          <li><a href="../../../2011/9/12/install-node-js-via-apt-on-debian-squeeze.html"><span class="date">09.11</span> Install node.js via APT on Debian Squeeze</a></li>
+        
+      </ul>
+    </div>
+
+          <div class="block">
+        <h2>Categories</h2>
+        <ul class="counts">
+        
+          <li><a href="../../../index.html"><span class="count">64</span>everything</a></li>
+        
+          <li><a href="../../../development.html"><span class="count">28</span>development</a></li>
+        
+          <li><a href="../../../politics.html"><span class="count">13</span>politics</a></li>
+        
+          <li><a href="../../../number-42.html"><span class="count">29</span>number 42</a></li>
+        
+        </ul>
+      </div>
+
+    
+    <div class="clear"></div>
+  </div>
+</div>
+
+
+  <div id="footer">
+    <div class="inside">
+      <p class="copyright">Hemingway theme &copy;2003-2005 Kyle Neath</p>
+      <div class="glider"><a href="http://catb.org/jargon" target="blank"><img src="../../../images/glider.png" alt="hacker's glider" title="hacker's glider"/></a></div>
+      <p class="attributes">
+        <a href="http://validator.w3.org/check/referer" target="_blank">Valid XHTML 1.0 Transitional</a>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer/" target="_blank">Valid CSS <sub>(except for an IE hack)</sub></a>
+      </p>
+    </div>
+  </div>
+
+  <div id="print-footer">
+  
+    <p>This article is (C) 2010 Marcello Barnaba &lt;<a href="mailto:vjt@openssl.it">vjt@openssl.it</a>&gt;, released under a Creative Commons BY-SA license.</p>
+    <p> It was printed from <a href="../../../index.html">sindro.me</a> and is available via the following link: &laquo;<a href="implementing-an-image-gallery-using-facebox-and-will_paginate.html" title="Implementing an image gallery using facebox and will_paginate">Implementing an image gallery using facebox and will_paginate</a>&raquo;</p>
+  
+  </div>
+
+  <!-- script type="text/javascript" src="http://antani.r13.railsrumble.com/assets/hermes.js"></script-->
+  
+</body>
+
+<!-- Mirrored from sindro.me/2009/2/21/implementing-an-image-gallery-using-facebox-and-will_paginate by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:23:14 GMT -->
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * 
+ * There are no secret messages here :-) for some fun, have a look at http://segmentation-fault.core-dumped.info/
+ *
+ * - vjt
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from sindro.me/2011/1/4/bsd-onto-a-macmini-4-1-no-way by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:20:29 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<title>sindro&#x00b7;me |  *BSD onto a MacMini 4,1? No way. :-( </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content="(C) 2009 Marcello Barnaba &lt;vjt&#x40;openssl.it&gt;" />
+<meta name="description" content=" *BSD onto a MacMini 4,1? No way. :-( |  " />
+<meta name="keywords" content=" apple,bsd,marcello,barnaba,blog,vjt,vjt@openssl.it,marcello.barnaba@gmail.com,ruby,rails,javascript,jquery,prototype,html,xhtml,programming,web,web2.0,technology,42,social,media,networking" />
+
+<link rel="shortcut icon" type="image/x-icon" href="../../../images/favicon.ico" />
+
+<!--script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAuWJufAKiIzBzAamZSsh2pRS1dYRPa35R5NeEJ7meGaq0OvPiHhQ3QalxlO5u0yKSQjKIMxYmX98B5A"></script-->
+<!--script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script-->
+
+<script type="text/javascript">
+  // google.load('jquery', '1.3.1');
+
+  /* Disabled June 1, 2015. Cookies? Hassles.
+  google.setOnLoadCallback(function() {
+    try {
+      var pageTracker = _gat._getTracker("UA-7522463-2");
+      pageTracker._trackPageview();
+    } catch(err) {}
+  });
+
+  var addthis_pub = "vjti";
+  var addthis_brand = 'sindro&#x00b7;me';
+  var addthis_header_color = "#cccccc";
+  var addthis_header_background = "#000000";
+  var addthis_options = 'twitter, facebook, google, linkedin, reddit, email, more';
+  var addthis_hover_delay = 420;
+  */
+
+</script>
+
+<!-- script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script -->
+
+<link href="../../../stylesheets/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../../../stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+
+
+<link href="http://feeds2.feedburner.com/sindrome" rel="alternate" type="application/atom+xml" title="Articles" />
+<link href="http://feeds2.feedburner.com/sindrome_comments" rel="alternate" type="application/atom+xml" title="Comments" />
+
+</head>
+<body>
+  <div id="header">
+    <div class="inside">
+      <h2><a href="../../../index.html">sindro&#x00b7;me</a></h2>
+      <p class="description">just another drop in the ocean</p>
+
+      <!--div class="search">
+        <form action="/search" method="get">
+          <input type="text" name="q" onfocus="this.value = ''" value="search articles..." />
+          <input type="image" src="/images/submit.gif" />
+        </form>
+      </div-->
+      <div class="clear"> </div>
+
+    </div>
+  </div>
+
+  <div id="primary" class="single-post">
+
+  <div class="inside">
+
+    <div class="primary">
+      <h1>*BSD onto a MacMini 4,1? No way. :-(</h1>
+      <div style="float:right"><img src="../../../assets/sindro.me/2011/1/4/mini-daemon.png" alt="" /></div>
+
+	<p>I spent the last two days trying to set up the Aluminium Mac Mini (rev. 4,1) as a home <span class="caps">NAS</span> server with encrypted storage, and I wanted a <span class="caps">BSD</span> system on it. There&#8217;s already an embedded OpenBSD onto the soekris gateway, and another companion would have been nice. :-)</p>
+
+
+	<p>Guess what, there&#8217;s no way out:</p>
+
+
+	<ul>
+	<li>FreeBSD 8.1 doesn&#8217;t complete the boot process, due to <a href="http://wiki.freebsd.org/AppleMacbook">a bug in the <span class="caps">SATA</span> chipset, <span class="caps">NV MCP89</span></a>;</li>
+		<li>FreeBSD 8.2-RC1 boots but, due to the same bug, doesn&#8217;t recognize any <span class="caps">SATA</span> drive nor any <span class="caps">USB</span> umass device;</li>
+		<li>NetBSD 5.1 boots fine, handles <span class="caps">SATA</span> disks via the generic pciide driver (no <span class="caps">DMA</span>, thus quite slow) but, unluckily, doesn&#8217;t handle the <span class="caps">BCM57762</span> ethernet controller. I tried with quick and dirty patches to <a href="http://code.bsd64.org/cvsweb/netbsd/src/sys/dev/pci/if_bge.c">bring the bge driver up to date with -current</a>, but still no luck: the <span class="caps">MII</span> link detection works, the card transmits but doesn&#8217;t receive. The sdmmc controller as well works with -current but not with 5.1-RELEASE. <span class="caps">ACPI</span> works correctly;</li>
+		<li>OpenBSD 4.8 boots, can access the <span class="caps">SATA</span> drives without <span class="caps">DMA</span>, and recognizes the bge network card, but exposes the very same behaviour as NetBSD 5.1 with the -current driver fitted in;</li>
+		<li>DragonFlyBSD 2.8.2 doesn&#8217;t even enter kernel mode, I suspect due to <span class="caps">ACPI</span> bugs;</li>
+		<li>PureDarwin didn&#8217;t inspire me too much, due to the many <a href="http://www.puredarwin.org/blockers">blocking issues</a>.</li>
+	</ul>
+
+
+	<p>All of them support encrypted storage, I built up a <a href="http://netbsd.gw.com/cgi-bin/man-cgi?cgd+4+NetBSD-5.0">NetBSD <span class="caps">CGD</span></a> disk flawlessly onto dk wedges; FreeBSD has got the interesting <a href="http://www.freebsd.org/doc/handbook/disks-encrypting.html">gbde(8) and geli(8)</a> GEOM-based tools that I wasn&#8217;t able to test, while OpenBSD supports crypto via a <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=softraid&amp;sektion=4">softraid personality</a>. Unluckily, support for the, nowadays, exotic Apple hardware is a no-brainer.</p>
+
+
+	<p>So, with no other way left open, I decided to go the Linux route, using the excellent <a href="http://sysresccd.org/">sysresccd</a>, that I elect today as the successor of the <a href="http://rescuecd.pld-linux.org/">pld-linux rescuecd</a>, companion of endless system recoveries :-). Anyway, you&#8217;ll need the 2.6.36 kernel to make it boot onto the MacMini4,1, due to the aforementioned <span class="caps">MCP89</span> bug. Ethernet card and SD card reader work out-of-the-box.</p>
+
+
+	<p>Now, I&#8217;m playing with <a href="http://code.google.com/p/cryptsetup/wiki/FrequentlyAskedQuestions"><span class="caps">LUKS</span></a> and, while I&#8217;m not that competent in cryptography, looks like it is more evolved than the *BSD counterparts, and anyway it is more versatile tool than the tools in OpenBSD and NetBSD. On the latter, having to set up <span class="caps">GPT</span> and DK Wedges to make the <span class="caps">CGD</span> and synch <span class="caps">MBR</span> and Disklabel to make the boot loader work (yuck!), everything coupled with rEFIt is quite a mess&#8482;. There&#8217;s a <a href="http://www.netbsd.org/~mishka/gptboot/howto.html"><span class="caps">GPT</span> loader for NetBSD</a> but I hadn&#8217;t a chance to try it out.</p>
+
+
+	<p>I hope this information is useful to anyone who tries a similar adventure, comments are appreciated :-).</p>
+
+      <p class="share-article"><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</p>
+
+      <div class="navigation">
+        <div class="previous">
+        
+          &lt;&lt;&lt; <a href="../../../2010/9/16/learning-about-world-cultures-via-google-autocomplete.html" title="PREV">PREV</a>
+        
+        </div>
+        <div class="next">
+        
+          <a href="../../3/6/rome-rsc-2011.html" title="NEXT">NEXT</a> &gt;&gt;&gt;
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="secondary">
+      <div id="share-icons">
+<span><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</span>
+<span>
+<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml"><img src="../../../images/icon-feed.png" alt="RSS"/></a>&nbsp;<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml">Subscribe to sindro&#x00b7;me</a></span>
+<span>
+<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="_blank"><img src="../../../images/icon-email.png" alt="E-Mail"/></a>&nbsp;<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="blank">Subscribe via e-mail</a></span>
+<span>
+<a href="../../../marcello-barnaba.html"><img src="../../../images/question-mark.jpg" alt="bio" /></a>&nbsp;<a href="../../../marcello-barnaba.html">About the author</a></span>
+</div>
+<div id="license">
+<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-sa/3.0/us/88x31.png" /></a></div>
+
+      <h2>About this entry</h2>
+      <div class="featured">
+        <p>You&rsquo;re currently reading &ldquo;<em>*BSD onto a MacMini 4,1? No way. :-(</em>&rdquo;, an entry on sindro.me</p>
+        <dl>
+          <dt>Published:</dt>
+          <dd>01.04.11 / 18PM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Updated:</dt>
+          <dd>07.02.11 / 19PM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Sections:</dt>
+          <dd>
+            
+              <a class="selected" href="../../../development.html" title="development">development</a>
+            
+          </dd>
+        </dl>
+        
+        <dl>
+          <dt>Tags:</dt>
+          <dd class="tags">
+            
+              <a href="../../../tags/apple.html" rel="tag" title="apple">apple</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/bsd.html" rel="tag" title="bsd">bsd</a>
+              
+            
+          </dd>
+        </dl>
+        
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- [END] #primary -->
+
+<div id="secondary">
+  <div class="inside">
+    <div class="comment-head">
+      <div class="comment-icon"><!-- credit: http://tancredi.co.uk --></div>
+      <h2>0 comments</h2>
+    </div>
+
+      
+    
+  </div>
+</div>
+
+<div id="ancillary">
+  <div class="inside">
+
+    <div class="block first">
+  <h2><a href="../../../marcello-barnaba.html">About</a></h2>
+  <p>This is <a href="../../../marcello-barnaba.html">sindro.me</a>, a weblog by <a href="../../../marcello-barnaba.html">Marcello Barnaba</a> (<a href="http://twitter.com/vjt"><em>@vjt</em></a>) about technology, ruby, development, software, the internet, entertainment, politics, sociology, and the answer to Life, Universe, and Everything (42).</p>
+
+  <h2>Links</h2>
+  <ul class="counts">
+    <li><a href="http://segmentation-fault.core-dumped.info/">Segmentation fault (core dumped)</a></li>
+    <li><a href="http://www.linkedin.com/in/marcellobarnaba" target="_blank">LinkedIn</a></li>
+    <li><a href="http://www.linkedin.com/profile/pdf?id=18152447&amp;pdfFileName=MarcelloBarnaba-Resume&amp;disablePdfCompression=true">Resum&egrave;</a></li>
+    <li><a href="http://github.com/vjt" target="_blank">github</a></li>
+    <li><a href="http://sourceforge.net/users/vjt" target="_blank">sourceforge profile</a></li>
+    <li><a href="https://plus.google.com/107382538213680942210?rel=author" target="_blank">google+</a></li>
+    <li><a href="https://facebook.com/vjt.rb" target="_blank">facebook</a></li>
+    <li><a href="http://delicious.com/vjt" target="_blank">delicious</a></li>
+    <li><a href="http://devjt.deviantart.com/" target="_blank">deviantArt</a></li>
+    <li><a href="http://last.fm/user/vjt" target="_blank">last.fm</a></li>
+    <li><a href="http://en.wikipedia.org/wiki/User:Vjt" target="_blank">en.wikipedia user page</a></li>
+    <li><a href="http://barnaba.openssl.it/" target="_blank">historical college projects</a></li>
+    <hr/>
+    <li><a href="http://www.ifad.org/">Work - IFAD</a></li>
+    <li><a href="http://antifork.org/" target="_blank">Hacks - antifork (outdated)</a></li>
+  </ul>
+</div>
+
+        <div class="block">
+      <h2>Recent articles</h2>
+      <ul class="dates">
+        
+          <li><a href="../../../2014/9/15/pallido-puntolino-azzurro-radio.html"><span class="date">09.14</span> Pallido Puntolino Azzurro (Radio)</a></li>
+        
+          <li><a href="../../../2014/7/30/avevo-un-amico-pittore.html"><span class="date">07.14</span> Avevo un amico pittore</a></li>
+        
+          <li><a href="../../../2014/7/1/the-answer-to-life-universe-and-everything.html"><span class="date">07.14</span> The answer to Life, Universe and Everything</a></li>
+        
+          <li><a href="../../../2014/6/23/science-and-religion-it-doesn-t-work.html"><span class="date">06.14</span> Science and Religion: it doesn't work</a></li>
+        
+          <li><a href="../../../2014/2/28/il-vero-sistemista.html"><span class="date">02.14</span> Il vero sistemista</a></li>
+        
+          <li><a href="../../../2014/2/28/goto-fail.html"><span class="date">02.14</span> goto fail;</a></li>
+        
+          <li><a href="../../../2013/12/1/this-weekend-i-didn-t-code.html"><span class="date">12.13</span> This weekend I didn't code</a></li>
+        
+          <li><a href="../../9/12/install-node-js-via-apt-on-debian-squeeze.html"><span class="date">09.11</span> Install node.js via APT on Debian Squeeze</a></li>
+        
+      </ul>
+    </div>
+
+          <div class="block">
+        <h2>Categories</h2>
+        <ul class="counts">
+        
+          <li><a href="../../../index.html"><span class="count">64</span>everything</a></li>
+        
+          <li><a href="../../../development.html"><span class="count">28</span>development</a></li>
+        
+          <li><a href="../../../politics.html"><span class="count">13</span>politics</a></li>
+        
+          <li><a href="../../../number-42.html"><span class="count">29</span>number 42</a></li>
+        
+        </ul>
+      </div>
+
+    
+    <div class="clear"></div>
+  </div>
+</div>
+
+
+  <div id="footer">
+    <div class="inside">
+      <p class="copyright">Hemingway theme &copy;2003-2005 Kyle Neath</p>
+      <div class="glider"><a href="http://catb.org/jargon" target="blank"><img src="../../../images/glider.png" alt="hacker's glider" title="hacker's glider"/></a></div>
+      <p class="attributes">
+        <a href="http://validator.w3.org/check/referer" target="_blank">Valid XHTML 1.0 Transitional</a>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer/" target="_blank">Valid CSS <sub>(except for an IE hack)</sub></a>
+      </p>
+    </div>
+  </div>
+
+  <div id="print-footer">
+  
+    <p>This article is (C) 2010 Marcello Barnaba &lt;<a href="mailto:vjt@openssl.it">vjt@openssl.it</a>&gt;, released under a Creative Commons BY-SA license.</p>
+    <p> It was printed from <a href="../../../index.html">sindro.me</a> and is available via the following link: &laquo;<a href="bsd-onto-a-macmini-4-1-no-way.html" title="*BSD onto a MacMini 4,1? No way. :-(">*BSD onto a MacMini 4,1? No way. :-(</a>&raquo;</p>
+  
+  </div>
+
+  <!-- script type="text/javascript" src="http://antani.r13.railsrumble.com/assets/hermes.js"></script-->
+  
+</body>
+
+<!-- Mirrored from sindro.me/2011/1/4/bsd-onto-a-macmini-4-1-no-way by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:20:30 GMT -->
+</html>

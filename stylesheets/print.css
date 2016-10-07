@@ -1,0 +1,29 @@
+body {
+  background-color: #fff;
+  color: #000;
+  font-size: 12px;
+  font-family:"Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Arial, sans-serif;
+}
+
+/* Remove unwanted elements */
+#header, #twitter, .secondary, #secondary, .noprint,
+#ancillary, #footer, .share-article, .navigation, ins, object {
+  display: none !important;
+}
+
+/* Ensure the content spans the full width */
+#primary {
+  width: 100%; margin: 0; float: none;
+}
+
+/* Improve colour contrast of links */
+a, a:link, a:visited {
+  color: #781351;
+}
+
+#print-footer {
+  border-top: 1px dashed black;
+  margin: 20px 0;
+  font-size: 1.4em;
+  font-weight: bold;
+}

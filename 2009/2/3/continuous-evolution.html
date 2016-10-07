@@ -1,0 +1,374 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * 
+ * There are no secret messages here :-) for some fun, have a look at http://segmentation-fault.core-dumped.info/
+ *
+ * - vjt
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from sindro.me/2009/2/3/continuous-evolution by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:23:15 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<title>sindro&#x00b7;me |  Continuous evolution </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content="(C) 2009 Marcello Barnaba &lt;vjt&#x40;openssl.it&gt;" />
+<meta name="description" content=" Continuous evolution | releases$ du -sch *7.6M    200812091323477.0M    200812091333507.6M    200812091443437.1M    200812091451337.1M    200812091518437.1M    200812091630137.1M    200812091755067.1M    200812091835537.1M    200812111229398.6M    200812121900268.3M    200812122018528.3M    200812122039438.3M    200812122054308.3M    200812130148478.3M    200812130203578.4M    200812131634288.4M    20081213173633 " />
+<meta name="keywords" content=" capistrano,evolution,ruby,marcello,barnaba,blog,vjt,vjt@openssl.it,marcello.barnaba@gmail.com,ruby,rails,javascript,jquery,prototype,html,xhtml,programming,web,web2.0,technology,42,social,media,networking" />
+
+<link rel="shortcut icon" type="image/x-icon" href="../../../images/favicon.ico" />
+
+<!--script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAuWJufAKiIzBzAamZSsh2pRS1dYRPa35R5NeEJ7meGaq0OvPiHhQ3QalxlO5u0yKSQjKIMxYmX98B5A"></script-->
+<!--script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script-->
+
+<script type="text/javascript">
+  // google.load('jquery', '1.3.1');
+
+  /* Disabled June 1, 2015. Cookies? Hassles.
+  google.setOnLoadCallback(function() {
+    try {
+      var pageTracker = _gat._getTracker("UA-7522463-2");
+      pageTracker._trackPageview();
+    } catch(err) {}
+  });
+
+  var addthis_pub = "vjti";
+  var addthis_brand = 'sindro&#x00b7;me';
+  var addthis_header_color = "#cccccc";
+  var addthis_header_background = "#000000";
+  var addthis_options = 'twitter, facebook, google, linkedin, reddit, email, more';
+  var addthis_hover_delay = 420;
+  */
+
+</script>
+
+<!-- script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script -->
+
+<link href="../../../stylesheets/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../../../stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+
+
+<link href="http://feeds2.feedburner.com/sindrome" rel="alternate" type="application/atom+xml" title="Articles" />
+<link href="http://feeds2.feedburner.com/sindrome_comments" rel="alternate" type="application/atom+xml" title="Comments" />
+
+</head>
+<body>
+  <div id="header">
+    <div class="inside">
+      <h2><a href="../../../index.html">sindro&#x00b7;me</a></h2>
+      <p class="description">just another drop in the ocean</p>
+
+      <!--div class="search">
+        <form action="/search" method="get">
+          <input type="text" name="q" onfocus="this.value = ''" value="search articles..." />
+          <input type="image" src="/images/submit.gif" />
+        </form>
+      </div-->
+      <div class="clear"> </div>
+
+    </div>
+  </div>
+
+  <div id="primary" class="single-post">
+
+  <div class="inside">
+
+    <div class="primary">
+      <h1>Continuous evolution</h1>
+      <pre><code>
+releases$ du -sch *
+7.6M    20081209132347
+7.0M    20081209133350
+7.6M    20081209144343
+7.1M    20081209145133
+7.1M    20081209151843
+7.1M    20081209163013
+7.1M    20081209175506
+7.1M    20081209183553
+7.1M    20081211122939
+8.6M    20081212190026
+8.3M    20081212201852
+8.3M    20081212203943
+8.3M    20081212205430
+8.3M    20081213014847
+8.3M    20081213020357
+8.4M    20081213163428
+8.4M    20081213173633
+8.4M    20081213184749
+8.5M    20081214171239
+8.5M    20081214174058
+8.5M    20081215122638
+8.5M    20081215152408
+8.5M    20081215171627
+8.5M    20081215200430
+8.5M    20081215205042
+8.5M    20081215235659
+8.5M    20081216000247
+8.5M    20081216164820
+8.6M    20081216200524
+8.6M    20081216203210
+8.6M    20081216210540
+8.6M    20081217193227
+8.6M    20081218174354
+8.6M    20081218191803
+8.6M    20081219152005
+8.6M    20081219152907
+8.6M    20081219155519
+9.0M    20081219193433
+8.6M    20081221173121
+8.6M    20081221174616
+19M    20081222035552
+17M    20081222040347
+17M    20081222055349
+11M    20081222055633
+14M    20081222055923
+16M    20081222142851
+11M    20081228152551
+60M    20081228163752
+11M    20090105191748
+11M    20090106064448
+11M    20090106184425
+11M    20090106185528
+11M    20090106204053
+11M    20090106230526
+14M    20090107001206
+11M    20090107175246
+11M    20090107175846
+11M    20090107193832
+11M    20090107194313
+11M    20090107204045
+11M    20090107204438
+12M    20090109164048
+11M    20090109185118
+11M    20090112031351
+11M    20090113104259
+12M    20090113152213
+12M    20090113171628
+12M    20090113194223
+12M    20090113194415
+20M    20090113201919
+12M    20090114180311
+12M    20090114185735
+12M    20090115071510
+12M    20090115102500
+12M    20090115131810
+12M    20090115155944
+12M    20090115183612
+12M    20090116121148
+12M    20090116125514
+12M    20090116131343
+12M    20090116170318
+12M    20090116171428
+24M    20090116173349
+16M    20090118204113
+14M    20090120151836
+12M    20090122150700
+12M    20090122155359
+18M    20090122160455
+78M    20090125055603
+48M    20090126114022
+14M    20090126143048
+12M    20090126160105
+12M    20090126160400
+12M    20090126165339
+22M    20090126170159
+12M    20090126193506
+12M    20090126194637
+12M    20090126194859
+12M    20090127142057
+14M    20090127155906
+52M    20090127180739
+13M    20090129144356
+12M    20090201141300
+12M    20090201151016
+13M    20090202114805
+12M    20090203113750
+
+Fascinating, nonetheless.
+</code></pre>
+
+      <p class="share-article"><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</p>
+
+      <div class="navigation">
+        <div class="previous">
+        
+          &lt;&lt;&lt; <a href="../../1/29/a-permalink_fu-improvement-allow-modification-of-permalinks-and-create-redirects-on-the-fly.html" title="PREV">PREV</a>
+        
+        </div>
+        <div class="next">
+        
+          <a href="../10/how-to-mirror-a-static-copy-of-the-opensource-org-website.html" title="NEXT">NEXT</a> &gt;&gt;&gt;
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="secondary">
+      <div id="share-icons">
+<span><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</span>
+<span>
+<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml"><img src="../../../images/icon-feed.png" alt="RSS"/></a>&nbsp;<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml">Subscribe to sindro&#x00b7;me</a></span>
+<span>
+<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="_blank"><img src="../../../images/icon-email.png" alt="E-Mail"/></a>&nbsp;<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="blank">Subscribe via e-mail</a></span>
+<span>
+<a href="../../../marcello-barnaba.html"><img src="../../../images/question-mark.jpg" alt="bio" /></a>&nbsp;<a href="../../../marcello-barnaba.html">About the author</a></span>
+</div>
+<div id="license">
+<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-sa/3.0/us/88x31.png" /></a></div>
+
+      <h2>About this entry</h2>
+      <div class="featured">
+        <p>You&rsquo;re currently reading &ldquo;<em>Continuous evolution</em>&rdquo;, an entry on sindro.me</p>
+        <dl>
+          <dt>Published:</dt>
+          <dd>02.03.09 / 14PM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Updated:</dt>
+          <dd>02.20.09 / 04AM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Sections:</dt>
+          <dd>
+            
+              <a class="selected" href="../../../development.html" title="development">development</a>
+            
+              <a href="../../../number-42.html" title="number 42">number 42</a>
+            
+          </dd>
+        </dl>
+        
+        <dl>
+          <dt>Tags:</dt>
+          <dd class="tags">
+            
+              <a href="../../../tags/capistrano.html" rel="tag" title="capistrano">capistrano</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/evolution.html" rel="tag" title="evolution">evolution</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/ruby.html" rel="tag" title="ruby">ruby</a>
+              
+            
+          </dd>
+        </dl>
+        
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- [END] #primary -->
+
+<div id="secondary">
+  <div class="inside">
+    <div class="comment-head">
+      <div class="comment-icon"><!-- credit: http://tancredi.co.uk --></div>
+      <h2>0 comments</h2>
+    </div>
+
+      
+    
+  </div>
+</div>
+
+<div id="ancillary">
+  <div class="inside">
+
+    <div class="block first">
+  <h2><a href="../../../marcello-barnaba.html">About</a></h2>
+  <p>This is <a href="../../../marcello-barnaba.html">sindro.me</a>, a weblog by <a href="../../../marcello-barnaba.html">Marcello Barnaba</a> (<a href="http://twitter.com/vjt"><em>@vjt</em></a>) about technology, ruby, development, software, the internet, entertainment, politics, sociology, and the answer to Life, Universe, and Everything (42).</p>
+
+  <h2>Links</h2>
+  <ul class="counts">
+    <li><a href="http://segmentation-fault.core-dumped.info/">Segmentation fault (core dumped)</a></li>
+    <li><a href="http://www.linkedin.com/in/marcellobarnaba" target="_blank">LinkedIn</a></li>
+    <li><a href="http://www.linkedin.com/profile/pdf?id=18152447&amp;pdfFileName=MarcelloBarnaba-Resume&amp;disablePdfCompression=true">Resum&egrave;</a></li>
+    <li><a href="http://github.com/vjt" target="_blank">github</a></li>
+    <li><a href="http://sourceforge.net/users/vjt" target="_blank">sourceforge profile</a></li>
+    <li><a href="https://plus.google.com/107382538213680942210?rel=author" target="_blank">google+</a></li>
+    <li><a href="https://facebook.com/vjt.rb" target="_blank">facebook</a></li>
+    <li><a href="http://delicious.com/vjt" target="_blank">delicious</a></li>
+    <li><a href="http://devjt.deviantart.com/" target="_blank">deviantArt</a></li>
+    <li><a href="http://last.fm/user/vjt" target="_blank">last.fm</a></li>
+    <li><a href="http://en.wikipedia.org/wiki/User:Vjt" target="_blank">en.wikipedia user page</a></li>
+    <li><a href="http://barnaba.openssl.it/" target="_blank">historical college projects</a></li>
+    <hr/>
+    <li><a href="http://www.ifad.org/">Work - IFAD</a></li>
+    <li><a href="http://antifork.org/" target="_blank">Hacks - antifork (outdated)</a></li>
+  </ul>
+</div>
+
+        <div class="block">
+      <h2>Recent articles</h2>
+      <ul class="dates">
+        
+          <li><a href="../../../2014/9/15/pallido-puntolino-azzurro-radio.html"><span class="date">09.14</span> Pallido Puntolino Azzurro (Radio)</a></li>
+        
+          <li><a href="../../../2014/7/30/avevo-un-amico-pittore.html"><span class="date">07.14</span> Avevo un amico pittore</a></li>
+        
+          <li><a href="../../../2014/7/1/the-answer-to-life-universe-and-everything.html"><span class="date">07.14</span> The answer to Life, Universe and Everything</a></li>
+        
+          <li><a href="../../../2014/6/23/science-and-religion-it-doesn-t-work.html"><span class="date">06.14</span> Science and Religion: it doesn't work</a></li>
+        
+          <li><a href="../../../2014/2/28/il-vero-sistemista.html"><span class="date">02.14</span> Il vero sistemista</a></li>
+        
+          <li><a href="../../../2014/2/28/goto-fail.html"><span class="date">02.14</span> goto fail;</a></li>
+        
+          <li><a href="../../../2013/12/1/this-weekend-i-didn-t-code.html"><span class="date">12.13</span> This weekend I didn't code</a></li>
+        
+          <li><a href="../../../2011/9/12/install-node-js-via-apt-on-debian-squeeze.html"><span class="date">09.11</span> Install node.js via APT on Debian Squeeze</a></li>
+        
+      </ul>
+    </div>
+
+          <div class="block">
+        <h2>Categories</h2>
+        <ul class="counts">
+        
+          <li><a href="../../../index.html"><span class="count">64</span>everything</a></li>
+        
+          <li><a href="../../../development.html"><span class="count">28</span>development</a></li>
+        
+          <li><a href="../../../politics.html"><span class="count">13</span>politics</a></li>
+        
+          <li><a href="../../../number-42.html"><span class="count">29</span>number 42</a></li>
+        
+        </ul>
+      </div>
+
+    
+    <div class="clear"></div>
+  </div>
+</div>
+
+
+  <div id="footer">
+    <div class="inside">
+      <p class="copyright">Hemingway theme &copy;2003-2005 Kyle Neath</p>
+      <div class="glider"><a href="http://catb.org/jargon" target="blank"><img src="../../../images/glider.png" alt="hacker's glider" title="hacker's glider"/></a></div>
+      <p class="attributes">
+        <a href="http://validator.w3.org/check/referer" target="_blank">Valid XHTML 1.0 Transitional</a>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer/" target="_blank">Valid CSS <sub>(except for an IE hack)</sub></a>
+      </p>
+    </div>
+  </div>
+
+  <div id="print-footer">
+  
+    <p>This article is (C) 2010 Marcello Barnaba &lt;<a href="mailto:vjt@openssl.it">vjt@openssl.it</a>&gt;, released under a Creative Commons BY-SA license.</p>
+    <p> It was printed from <a href="../../../index.html">sindro.me</a> and is available via the following link: &laquo;<a href="continuous-evolution.html" title="Continuous evolution">Continuous evolution</a>&raquo;</p>
+  
+  </div>
+
+  <!-- script type="text/javascript" src="http://antani.r13.railsrumble.com/assets/hermes.js"></script-->
+  
+</body>
+
+<!-- Mirrored from sindro.me/2009/2/3/continuous-evolution by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:23:16 GMT -->
+</html>

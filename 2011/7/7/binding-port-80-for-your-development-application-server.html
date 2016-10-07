@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * 
+ * There are no secret messages here :-) for some fun, have a look at http://segmentation-fault.core-dumped.info/
+ *
+ * - vjt
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<!-- Mirrored from sindro.me/2011/7/7/binding-port-80-for-your-development-application-server by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:19:58 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<title>sindro&#x00b7;me |  Binding 80/TCP as non-root on your development server </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content="(C) 2009 Marcello Barnaba &lt;vjt&#x40;openssl.it&gt;" />
+<meta name="description" content=" Binding 80/TCP as non-root on your development server |  " />
+<meta name="keywords" content=" capabilities,linux,ruby,marcello,barnaba,blog,vjt,vjt@openssl.it,marcello.barnaba@gmail.com,ruby,rails,javascript,jquery,prototype,html,xhtml,programming,web,web2.0,technology,42,social,media,networking" />
+
+<link rel="shortcut icon" type="image/x-icon" href="../../../images/favicon.ico" />
+
+<!--script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAuWJufAKiIzBzAamZSsh2pRS1dYRPa35R5NeEJ7meGaq0OvPiHhQ3QalxlO5u0yKSQjKIMxYmX98B5A"></script-->
+<!--script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script-->
+
+<script type="text/javascript">
+  // google.load('jquery', '1.3.1');
+
+  /* Disabled June 1, 2015. Cookies? Hassles.
+  google.setOnLoadCallback(function() {
+    try {
+      var pageTracker = _gat._getTracker("UA-7522463-2");
+      pageTracker._trackPageview();
+    } catch(err) {}
+  });
+
+  var addthis_pub = "vjti";
+  var addthis_brand = 'sindro&#x00b7;me';
+  var addthis_header_color = "#cccccc";
+  var addthis_header_background = "#000000";
+  var addthis_options = 'twitter, facebook, google, linkedin, reddit, email, more';
+  var addthis_hover_delay = 420;
+  */
+
+</script>
+
+<!-- script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script -->
+
+<link href="../../../stylesheets/style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../../../stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+
+
+<link href="http://feeds2.feedburner.com/sindrome" rel="alternate" type="application/atom+xml" title="Articles" />
+<link href="http://feeds2.feedburner.com/sindrome_comments" rel="alternate" type="application/atom+xml" title="Comments" />
+
+</head>
+<body>
+  <div id="header">
+    <div class="inside">
+      <h2><a href="../../../index.html">sindro&#x00b7;me</a></h2>
+      <p class="description">just another drop in the ocean</p>
+
+      <!--div class="search">
+        <form action="/search" method="get">
+          <input type="text" name="q" onfocus="this.value = ''" value="search articles..." />
+          <input type="image" src="/images/submit.gif" />
+        </form>
+      </div-->
+      <div class="clear"> </div>
+
+    </div>
+  </div>
+
+  <div id="primary" class="single-post">
+
+  <div class="inside">
+
+    <div class="primary">
+      <h1>Binding 80/TCP as non-root on your development server</h1>
+      <div style="float:right">
+<img src="../../../assets/sindro.me/2011/7/7/neo-tux.png" alt="" />
+<p style="font-size:0.8em; color:#aaa; text-align:center">neo-tux by <a href="http://sagarkshetri.com.np/blog/?attachment_id=337">sagarkshetri.com.np</a></p>
+</div>
+
+	<p>So you have a Linux VM you use for development, because you want to mirror the production environment as closely as possible. You have many applications to deal with, they have to be running at the same time because they are nifty <span class="caps">REST JSON</span> web services.</p>
+
+
+	<p>You are very tired to remember which one you put on port <code>8081</code>, and your configuration files slowly become a real mess. So you set up IP address aliases in for the network interface and decide to assign even host names &#8211; <code>/etc/hosts</code> is just fine &#8211; for each app.</p>
+
+
+	<p>Then, in such a setup, why would you still need to run them on ports higher than <code>1024</code>? Wouldn&#8217;t be just great to type the application name in the browser address bar? Indeed it is, but it&#8217;s better to not run them as <code>root</code>, anyway.</p>
+
+
+	<p>The solution are <a href="http://www.kernel.org/doc/man-pages/online/pages/man7/capabilities.7.html">Linux capabilities</a> (see also <a href="http://www.friedhoff.org/posixfilecaps.html">here</a>). The one that interests us is <code>cap_net_bind_service</code>: it gives a process the right to bind well-known ports (<code>&lt; 1024</code>). If you use an interpreted language, of course you&#8217;ll have to add the capability to the interpreter itself. That&#8217;s why there&#8217;s <strong>development</strong> in the title of this article &#8211; you should not set this up on a production server, if you don&#8217;t know what you are doing.</p>
+
+
+	<p>One final quirk: if you happen to <code>dlopen()</code> shared objects that dynamically link towards libraries outside the canonical paths, you cannot load them via <code>LD_LIBRARY_PATH</code> (e.g. the <code>SYBASE.sh</code>) as it is ignored for <code>setcap</code>-ped processes. You should better move the library paths into an <code>/etc/ld.so.conf.d</code> snippet.</p>
+
+
+	<h2>tl;dr</h2>
+
+
+	<p>Assuming you are the latest and greatest rails developer, you should become root &#8211; or use sudo, as you wish &#8211; and</p>
+
+
+<pre>
+# YOU ARE ON YOUR DEVELOPMENT MACHINE
+setcap cap_net_bind_service+ep `which ruby`
+</pre>
+
+	<p>Profit:</p>
+
+
+<pre>
+thin start -a yourapp -p 80
+&gt;&gt; Using rack adapter
+&gt;&gt; Thin web server (v1.2.11 codename Bat-Shit Crazy)
+&gt;&gt; Maximum connections set to 1024
+&gt;&gt; Listening on yourapp:80, CTRL+C to stop
+...
+</pre>
+
+      <p class="share-article"><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</p>
+
+      <div class="navigation">
+        <div class="previous">
+        
+          &lt;&lt;&lt; <a href="../2/ph-neutral-0x7db.html" title="PREV">PREV</a>
+        
+        </div>
+        <div class="next">
+        
+          <a href="../../9/12/install-node-js-via-apt-on-debian-squeeze.html" title="NEXT">NEXT</a> &gt;&gt;&gt;
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="secondary">
+      <div id="share-icons">
+<span><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="../../../images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  this article </a>
+</span>
+<span>
+<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml"><img src="../../../images/icon-feed.png" alt="RSS"/></a>&nbsp;<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml">Subscribe to sindro&#x00b7;me</a></span>
+<span>
+<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="_blank"><img src="../../../images/icon-email.png" alt="E-Mail"/></a>&nbsp;<a href="http://feedburner.google.com/fb/a/mailverify?uri=sindrome&amp;loc=en_US" target="blank">Subscribe via e-mail</a></span>
+<span>
+<a href="../../../marcello-barnaba.html"><img src="../../../images/question-mark.jpg" alt="bio" /></a>&nbsp;<a href="../../../marcello-barnaba.html">About the author</a></span>
+</div>
+<div id="license">
+<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="https://licensebuttons.net/l/by-sa/3.0/us/88x31.png" /></a></div>
+
+      <h2>About this entry</h2>
+      <div class="featured">
+        <p>You&rsquo;re currently reading &ldquo;<em>Binding 80/TCP as non-root on your development server</em>&rdquo;, an entry on sindro.me</p>
+        <dl>
+          <dt>Published:</dt>
+          <dd>07.07.11 / 14PM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Updated:</dt>
+          <dd>07.07.11 / 14PM</dd>
+        </dl>
+      
+        <dl>
+          <dt>Sections:</dt>
+          <dd>
+            
+              <a class="selected" href="../../../development.html" title="development">development</a>
+            
+          </dd>
+        </dl>
+        
+        <dl>
+          <dt>Tags:</dt>
+          <dd class="tags">
+            
+              <a href="../../../tags/capabilities.html" rel="tag" title="capabilities">capabilities</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/linux.html" rel="tag" title="linux">linux</a>
+               <strong>|</strong> 
+            
+              <a href="../../../tags/ruby.html" rel="tag" title="ruby">ruby</a>
+              
+            
+          </dd>
+        </dl>
+        
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- [END] #primary -->
+
+<div id="secondary">
+  <div class="inside">
+    <div class="comment-head">
+      <div class="comment-icon"><!-- credit: http://tancredi.co.uk --></div>
+      <h2>3 comments</h2>
+    </div>
+
+    
+    <ol id="comments">
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="John" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=8d96626e52beb1ff90f57a8e189e1e6f&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              <a href="http://lambda.io/processi" target="_blank">John</a>
+            
+          </span>
+          <span class="date">07.07.11 / 14PM</span>
+        </cite>
+        <div class="content">
+          <p>You could also look at nginx and its proxy_pass feature. It will save you grepping strace runs, and knowing nginx is becoming a must these days, you&#8217;ll also be able to allow/deny hosts, and your nginx.conf will nicely gather your settings in one place.</p>
+
+
+	<p>See for example <a href="https://gist.github.com/1069413">https://gist.github.com/1069413</a></p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="Marcello Barnaba" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=b9896d170716175a070c8c03cda3b97f&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              Marcello Barnaba
+            
+          </span>
+          <span class="date">07.08.11 / 00AM</span>
+        </cite>
+        <div class="content">
+          <p>Yeah &#8211; I also wrote a boilerplate nginx conf ( <a href="https://gist.github.com/804654">https://gist.github.com/804654</a> ) but I already knew about it &#8211; I never used <code>setcap</code> before and wanted to try it :-)</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <cite>
+          <span class="avatar"> <img alt="Janette" class="gravatar" height="40" src="http://www.gravatar.com/avatar.php?size=40&amp;gravatar_id=56443b35a78bc62de696370148565990&amp;default=identicon" width="40" /></span>
+          <span class="author">
+            
+              <a href="https://youtube.com/" target="_blank">Janette</a>
+            
+          </span>
+          <span class="date">09.16.14 / 03AM</span>
+        </cite>
+        <div class="content">
+          <p>Howdy just wanted to give you a quick heads up.
+The words in your post seem too be running offf the screedn in Safari.
+I&#8217;m not sure if this is a format issue or something to 
+do with internet browser compatibility but I thought I&#8217;d post to 
+let you know. Thee style and ddesign look great though!</p>
+
+
+	<p>Hope you get the issue fixesd soon. Kudos</p>
+        </div>
+        <div class="clear"></div>
+      </li>
+      
+    </ol>
+      
+    
+  </div>
+</div>
+
+<div id="ancillary">
+  <div class="inside">
+
+    <div class="block first">
+  <h2><a href="../../../marcello-barnaba.html">About</a></h2>
+  <p>This is <a href="../../../marcello-barnaba.html">sindro.me</a>, a weblog by <a href="../../../marcello-barnaba.html">Marcello Barnaba</a> (<a href="http://twitter.com/vjt"><em>@vjt</em></a>) about technology, ruby, development, software, the internet, entertainment, politics, sociology, and the answer to Life, Universe, and Everything (42).</p>
+
+  <h2>Links</h2>
+  <ul class="counts">
+    <li><a href="http://segmentation-fault.core-dumped.info/">Segmentation fault (core dumped)</a></li>
+    <li><a href="http://www.linkedin.com/in/marcellobarnaba" target="_blank">LinkedIn</a></li>
+    <li><a href="http://www.linkedin.com/profile/pdf?id=18152447&amp;pdfFileName=MarcelloBarnaba-Resume&amp;disablePdfCompression=true">Resum&egrave;</a></li>
+    <li><a href="http://github.com/vjt" target="_blank">github</a></li>
+    <li><a href="http://sourceforge.net/users/vjt" target="_blank">sourceforge profile</a></li>
+    <li><a href="https://plus.google.com/107382538213680942210?rel=author" target="_blank">google+</a></li>
+    <li><a href="https://facebook.com/vjt.rb" target="_blank">facebook</a></li>
+    <li><a href="http://delicious.com/vjt" target="_blank">delicious</a></li>
+    <li><a href="http://devjt.deviantart.com/" target="_blank">deviantArt</a></li>
+    <li><a href="http://last.fm/user/vjt" target="_blank">last.fm</a></li>
+    <li><a href="http://en.wikipedia.org/wiki/User:Vjt" target="_blank">en.wikipedia user page</a></li>
+    <li><a href="http://barnaba.openssl.it/" target="_blank">historical college projects</a></li>
+    <hr/>
+    <li><a href="http://www.ifad.org/">Work - IFAD</a></li>
+    <li><a href="http://antifork.org/" target="_blank">Hacks - antifork (outdated)</a></li>
+  </ul>
+</div>
+
+        <div class="block">
+      <h2>Recent articles</h2>
+      <ul class="dates">
+        
+          <li><a href="../../../2014/9/15/pallido-puntolino-azzurro-radio.html"><span class="date">09.14</span> Pallido Puntolino Azzurro (Radio)</a></li>
+        
+          <li><a href="../../../2014/7/30/avevo-un-amico-pittore.html"><span class="date">07.14</span> Avevo un amico pittore</a></li>
+        
+          <li><a href="../../../2014/7/1/the-answer-to-life-universe-and-everything.html"><span class="date">07.14</span> The answer to Life, Universe and Everything</a></li>
+        
+          <li><a href="../../../2014/6/23/science-and-religion-it-doesn-t-work.html"><span class="date">06.14</span> Science and Religion: it doesn't work</a></li>
+        
+          <li><a href="../../../2014/2/28/il-vero-sistemista.html"><span class="date">02.14</span> Il vero sistemista</a></li>
+        
+          <li><a href="../../../2014/2/28/goto-fail.html"><span class="date">02.14</span> goto fail;</a></li>
+        
+          <li><a href="../../../2013/12/1/this-weekend-i-didn-t-code.html"><span class="date">12.13</span> This weekend I didn't code</a></li>
+        
+          <li><a href="../../9/12/install-node-js-via-apt-on-debian-squeeze.html"><span class="date">09.11</span> Install node.js via APT on Debian Squeeze</a></li>
+        
+      </ul>
+    </div>
+
+          <div class="block">
+        <h2>Categories</h2>
+        <ul class="counts">
+        
+          <li><a href="../../../index.html"><span class="count">64</span>everything</a></li>
+        
+          <li><a href="../../../development.html"><span class="count">28</span>development</a></li>
+        
+          <li><a href="../../../politics.html"><span class="count">13</span>politics</a></li>
+        
+          <li><a href="../../../number-42.html"><span class="count">29</span>number 42</a></li>
+        
+        </ul>
+      </div>
+
+    
+    <div class="clear"></div>
+  </div>
+</div>
+
+
+  <div id="footer">
+    <div class="inside">
+      <p class="copyright">Hemingway theme &copy;2003-2005 Kyle Neath</p>
+      <div class="glider"><a href="http://catb.org/jargon" target="blank"><img src="../../../images/glider.png" alt="hacker's glider" title="hacker's glider"/></a></div>
+      <p class="attributes">
+        <a href="http://validator.w3.org/check/referer" target="_blank">Valid XHTML 1.0 Transitional</a>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer/" target="_blank">Valid CSS <sub>(except for an IE hack)</sub></a>
+      </p>
+    </div>
+  </div>
+
+  <div id="print-footer">
+  
+    <p>This article is (C) 2010 Marcello Barnaba &lt;<a href="mailto:vjt@openssl.it">vjt@openssl.it</a>&gt;, released under a Creative Commons BY-SA license.</p>
+    <p> It was printed from <a href="../../../index.html">sindro.me</a> and is available via the following link: &laquo;<a href="binding-port-80-for-your-development-application-server.html" title="Binding 80/TCP as non-root on your development server">Binding 80/TCP as non-root on your development server</a>&raquo;</p>
+  
+  </div>
+
+  <!-- script type="text/javascript" src="http://antani.r13.railsrumble.com/assets/hermes.js"></script-->
+  
+</body>
+
+<!-- Mirrored from sindro.me/2011/7/7/binding-port-80-for-your-development-application-server by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:20:00 GMT -->
+</html>
