@@ -7,7 +7,7 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<!-- Mirrored from sindro.me/?page=2 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:19:55 GMT -->
+<!-- Mirrored from sindro.me/?page=2 by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 08 Oct 2016 00:40:01 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 <head>
 <title>sindro&#x00b7;me |   Marcello Barnaba blog index  </title>
@@ -17,32 +17,6 @@
 <meta name="keywords" content="everything,marcello,barnaba,blog,vjt,vjt@openssl.it,marcello.barnaba@gmail.com,ruby,rails,javascript,jquery,prototype,html,xhtml,programming,web,web2.0,technology,42,social,media,networking" />
 
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
-
-<!--script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAuWJufAKiIzBzAamZSsh2pRS1dYRPa35R5NeEJ7meGaq0OvPiHhQ3QalxlO5u0yKSQjKIMxYmX98B5A"></script-->
-<!--script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script-->
-
-<script type="text/javascript">
-  // google.load('jquery', '1.3.1');
-
-  /* Disabled June 1, 2015. Cookies? Hassles.
-  google.setOnLoadCallback(function() {
-    try {
-      var pageTracker = _gat._getTracker("UA-7522463-2");
-      pageTracker._trackPageview();
-    } catch(err) {}
-  });
-
-  var addthis_pub = "vjti";
-  var addthis_brand = 'sindro&#x00b7;me';
-  var addthis_header_color = "#cccccc";
-  var addthis_header_background = "#000000";
-  var addthis_options = 'twitter, facebook, google, linkedin, reddit, email, more';
-  var addthis_hover_delay = 420;
-  */
-
-</script>
-
-<!-- script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script -->
 
 <link href="stylesheets/style.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
@@ -57,15 +31,7 @@
     <div class="inside">
       <h2><a href="index.html">sindro&#x00b7;me</a></h2>
       <p class="description">just another drop in the ocean</p>
-
-      <!--div class="search">
-        <form action="/search" method="get">
-          <input type="text" name="q" onfocus="this.value = ''" value="search articles..." />
-          <input type="image" src="/images/submit.gif" />
-        </form>
-      </div-->
       <div class="clear"> </div>
-
     </div>
   </div>
 
@@ -75,8 +41,6 @@
   <div class="inside">
     <div class="ads">
       <div id="share-icons">
-<span><a class="addthis" href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="images/icon-addthis.png" alt="Bookmark and Share"/></a>&nbsp;<a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this.previousElementSibling, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()">Share  the syndro&#x00b7;me </a>
-</span>
 <span>
 <a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml"><img src="images/icon-feed.png" alt="RSS"/></a>&nbsp;<a href="http://feeds2.feedburner.com/sindrome" target="_blank" rel="alternate" type="application/rss+xml">Subscribe to sindro&#x00b7;me</a></span>
 <span>
@@ -95,339 +59,361 @@
 
 
 <div class="story first">
-  <h1><a href="2011/7/7/binding-port-80-for-your-development-application-server.html" title="Binding 80/TCP as non-root on your development server">Binding 80/TCP as non-root on your development server</a></h1>
+  <h1><a href="2010/4/3/couchdb-invalid-utf8-json.html" title="CouchDB 0.11 Invalid UTF-8 JSON: Solved">CouchDB 0.11 Invalid UTF-8 JSON: Solved</a></h1>
   
-    <div style="float:right">
-<img src="assets/sindro.me/2011/7/7/neo-tux.png" alt="" />
-<p style="font-size:0.8em; color:#aaa; text-align:center">neo-tux by <a href="http://sagarkshetri.com.np/blog/?attachment_id=337">sagarkshetri.com.np</a></p>
-</div>
+    <div style="float:left; margin: 4px 8px 8px 0"><img src="assets/sindro.me/2010/4/3/couchdb.png" alt="" /></div>
 
-	<p>So you have a Linux VM you use for development, because you want to mirror the production environment as closely as possible. You have many applications to deal with, they have to be running at the same time because they are nifty <span class="caps">REST JSON</span> web services.</p>
+	<p>If your CouchDB 0.11 gives you the &#8220;Invalid <span class="caps">UTF</span>-8 <span class="caps">JSON</span>&#8221; error on <strong>every</strong> POST or <span class="caps">PUT</span> you issue to it, make sure that in your <code>$prefix/usr/lib/couchdb/erlang/lib</code> there aren&#8217;t leftovers from previous installations.</p>
 
 
-	<p>You are very tired to remember which one you put on port <code>8081</code>, and your configuration files slowly become a real mess. So you set up IP address aliases in for the network interface and decide to assign even host names &#8211; <code>/etc/hosts</code> is just fine &#8211; for each app.</p>
+	<p>On <a href="http://exelab.eu/">our</a> dev server, I found there two directories (&#8220;<code>couch-0.10</code>&#8221; and &#8220;<code>mochiweb-r97</code>&#8220;) from the old 0.10 setup that were causing this issue.</p>
 
 
-	<p>Then, in such a setup, why would you still need to run them on ports higher than <code>1024</code>? Wouldn&#8217;t be just great to type the application name in the browser address bar? Indeed it is, but it&#8217;s better to not run them as <code>root</code>, anyway.</p>
+	<p>This applies if you upgraded from source, as you&#8217;ve probably did, because there aren&#8217;t too many packages of CouchDB 0.11 as of April 2010 :-).</p>
 
 
-	<p>The solution are <a href="http://www.kernel.org/doc/man-pages/online/pages/man7/capabilities.7.html">Linux capabilities</a> (see also <a href="http://www.friedhoff.org/posixfilecaps.html">here</a>). The one that interests us is <code>cap_net_bind_service</code>: it gives a process the right to bind well-known ports (<code>&lt; 1024</code>). If you use an interpreted language, of course you&#8217;ll have to add the capability to the interpreter itself. That&#8217;s why there&#8217;s <strong>development</strong> in the title of this article &#8211; you should not set this up on a production server, if you don&#8217;t know what you are doing.</p>
+	<p>Huge thanks to <a href="http://twitter.com/couchdb">@couchdb</a> for <a href="http://twitter.com/CouchDB/status/11495632471">hinting me in the right direction</a> after <a href="http://mail-archives.apache.org/mod_mbox/couchdb-dev/201002.mbox/%3c112036548.3241265012630999.JavaMail.jira@brutus.apache.org%3e">reading a report on the dev mailing list</a> but I didn&#8217;t want to &#8220;remove and reinstall&#8221; because I like to understand what&#8217;s going on ;-).</p>
 
 
-	<p>One final quirk: if you happen to <code>dlopen()</code> shared objects that dynamically link towards libraries outside the canonical paths, you cannot load them via <code>LD_LIBRARY_PATH</code> (e.g. the <code>SYBASE.sh</code>) as it is ignored for <code>setcap</code>-ped processes. You should better move the library paths into an <code>/etc/ld.so.conf.d</code> snippet.</p>
-
-
-	<h2>tl;dr</h2>
-
-
-	<p>Assuming you are the latest and greatest rails developer, you should become root &#8211; or use sudo, as you wish &#8211; and</p>
-
-
-<pre>
-# YOU ARE ON YOUR DEVELOPMENT MACHINE
-setcap cap_net_bind_service+ep `which ruby`
-</pre>
-
-	<p>Profit:</p>
-
-
-<pre>
-thin start -a yourapp -p 80
-&gt;&gt; Using rack adapter
-&gt;&gt; Thin web server (v1.2.11 codename Bat-Shit Crazy)
-&gt;&gt; Maximum connections set to 1024
-&gt;&gt; Listening on yourapp:80, CTRL+C to stop
-...
-</pre>
+	<p><small>Footnote: could this be the end of Hiatus? I hope so ;-p</small></p>
   
   <div class="details">
-    Posted at 14PM on 07/07/11 | 
-    <a href="2011/7/7/binding-port-80-for-your-development-application-server.html#comments" title="3 comments">3 comments</a> |
+    Posted at 19PM on 04/03/10 | 
+    <a href="2010/4/3/couchdb-invalid-utf8-json.html#comments" title="1 comment">1 comment</a> |
     Filed Under: <a class="selected" href="development.html" title="development">development</a> 
   </div>
 </div>
 
 <div class="story">
-  <h1><a href="2011/7/2/ph-neutral-0x7db.html" title="PH-Neutral 0x7db">PH-Neutral 0x7db</a></h1>
+  <h1><a href="2009/6/12/doing-something-is-always-better-than-doing-nothing.html" title="Doing something is always better than doing nothing">Doing something is always better than doing nothing</a></h1>
   
-    <p>&#8220;<strong>If it is good, they stop making it</strong>&#8221;, the payoff printed on the conference necklaces, distributed to every participant, along with an über-l33t badge customized with our nickname and the key hash.</p>
+    <p>From the stage of web2.0 Expo 2008 in San Francisco, <a href="http://www.shirky.com/">Clay Shirky</a> talks about the social revolution carried by web2.0 into contemporary society, from TV to Wikipedia and World of Warcraft. And twitter still had to be globally recognized, in 2008.</p>
 
 
-	<p style="text-align:center;"><img src="assets/sindro.me/2011/7/2/phneutral-badge.jpg" alt="" /></p>
+	<p>Original video file and related discussion <a href="http://blip.tv/file/855937/">here</a> (courtesy of blip.tv). <sup><strong>Score: 5 (<em>insightful</em>)</strong></sup></p>
 
 
-	<p>Being my first experience at an international security conf (I’ve only been to the ccc2k+7 camp), and being a ph outsider &#8216;cause I never participated to previous editions, the boot keynote held by <a href="http://twitter.com/41414141">FX</a>, staffer and frontman, has been enlightening: &#8220;you ought to be here!&#8221;, he yelled while pointing at the stage, wearing a white shirt with the Phenoelit logo printed on both arms.</p>
-
-
-	<p>&#8220;This conference has never started on time&#8221;, he continued, &#8220;so there was no reason to do that for this last one&#8221;. the schedule is straightforward: party, the next days talks from 12.00PM to 7.30PM, then party, and the last days talks from 12.00PM to 5.30PM. definitely a setup well-playing with the available alcohol :-D.</p>
-
-
-	<p>Afterwards, another speaker informed us that the wi-fi access keys we received at the registration allows us to use a 6 APs/3 repeaters beast driven by an OpenBSD box &#8211; they want the audience to hack it because, well, &#8220;you are the Worst Case Scenario.&#8221; :-)</p>
-    <p class="read-on"><a href="2011/7/2/ph-neutral-0x7db.html#continue">continue reading &gt;&gt;&gt;</a></p>
+	<p style="text-align:center;"><object data="http://blip.tv/play/gshVtNIUhrwN" type="application/x-shockwave-flash" width="524" height="374" allowscriptaccess="always" allowfullscreen="true"></object></p>
   
   <div class="details">
-    Posted at 17PM on 07/02/11 | 
-    <a href="2011/7/2/ph-neutral-0x7db.html#comments" title="0 comments">0 comments</a> |
+    Posted at 15PM on 06/12/09 | 
+    <a href="2009/6/12/doing-something-is-always-better-than-doing-nothing.html#comments" title="0 comments">0 comments</a> |
+    Filed Under: 
+  </div>
+</div>
+
+<div class="story">
+  <h1><a href="2009/6/4/rails3-better-faster-stronger.html" title="Rails3: Better, Faster, Stronger">Rails3: Better, Faster, Stronger</a></h1>
+  
+    <div style="float:left; margin:5px 10px 0 0;"><img src="assets/sindro.me/2009/6/4/rails3-harder-better-faster-stronger.png" alt="" /></div>
+
+	<p>For those who understand italian, I&#8217;ve just <a href="http://therubymine.com/2009/06/04/rails3-better-faster-stronger/">published an article</a> on <a href="http://therubymine.com/">therubymine.com</a> on the upcoming <a href="http://rubyonrails.com/">Ruby on Rails</a> framework release, version 3.0: the big news is the merger with another ruby web framework, <a href="http://merbivore.com/">merb</a>.</p>
+
+
+	<p>Have a nice read! :-)</p>
+
+
+	<p><big><a href="http://web.archive.org/web/20100125191434/http://therubymine.com/2009/06/04/rails3-better-faster-stronger/">http://therubymine.com/2009/06/04/rails3-better-faster-stronger/</a></big></p>
+  
+  <div class="details">
+    Posted at 14PM on 06/04/09 | 
+    <a href="2009/6/4/rails3-better-faster-stronger.html#comments" title="0 comments">0 comments</a> |
     Filed Under: <a class="selected" href="development.html" title="development">development</a> 
   </div>
 </div>
 
 <div class="story">
-  <h1><a href="2011/3/6/rome-rsc-2011.html" title="Rome RSC 2011">Rome RSC 2011</a></h1>
+  <h1><a href="2009/5/31/it-just-takes-one-person-to-get-the-party-started.html" title="It just takes one person to get the party started">It just takes one person to get the party started</a></h1>
   
-    <p>Thanks to <a href="http://twitter.com/#!/jodosha">@jodosha</a> efforts and praising the former <span style="text-decoration: line-through;">Javaday</span> event, now renamed into <a href="http://codemotion.it/">codemotion</a> that brought in Rome many Ruby developers from Milan, Padua and other parts of Italy &#8211; the first <em>official</em> Ruby Social Club in Rome has been a great success. Of course, <em>officialty</em> is measured <strong>only</strong> in the amount of twitter spam posted about it! :-): earlier RSCs in Rome <a href="http://ruby-it.org/pages/Primo+incontro+del+Ruby+Social+Club+a+Roma">go back in time to 2006</a> organized by current <a href="http://mikamai.com/">mikamai</a> members and more meetups promoted by <a href="http://twitter.com/#!/jeko">@jeko</a> <a href="https://www.ruby-forum.com/search?query=ruby+social+club+roma">in 2007</a>.</p>
-
-<p>What matters is that there's a community, there's a passion, and there's love to share knowledge - no matter who holds the meetings, the important thing is that they're being held :-).</p>
-
-<p>The event was simple and direct - some beers first, then my keynote on RVM and Ruby interpreters, then Luca's one announcing his <a href="http://minege.ms/">minege.ms</a> project and after <strong>real</strong> social networking :-). I met <a href="http://twitter.com/#!/gravityblast">@gravityblast</a> after much time we didn't meet, knew the <a href="http://programmersinpadua.it/">PIP</a> group and met <a href="http://twitter.com/#!/svarione">@svarione</a>, <a href="http://twitter.com/#!/punkmanit">@punkmanit</a>, <a href="http://twitter.com/#!/leonardoperna">@leonardoperna</a>, <a href="http://twitter.com/#!/riggasconi">@riggasconi</a> <a href="http://twitter.com/#!/ogeidix">@ogeidix</a> and other smart people. Moreover, we spent quite some nice time together, making up a really lousy and funny week-end.<br/>Of course, huge kudos to <a href="http://twitter.com/#!/nhaima">@nhaima</a>'s car - that tirelessly carried us around Rome for two days :-)</p>
-
-<p>Now, looking forward to the next meetup, <strong>thanks</strong> everyone who participed, who offered me beers and, last but not least, thanks to <a href="http://twitter.com/#!/etapeta">@etapeta</a> for bringing me in time at the meeting - you're the real hero :-).</p>
-
-<div style="width:100%; text-align:center;" id="__ss_7167376">
-<object id="__sse7167376" width="660" height="551">
-  <param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=20110304-rvmatrscroma-110306095217-phpapp02&amp;stripped_title=rvm-and-ruby-interpreters-rsc-roma-032011&amp;userName=vjt" />
-  <param name="allowFullScreen" value="true"/>
-  <param name="allowScriptAccess" value="always"/>
-  <embed name="__sse7167376" src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=20110304-rvmatrscroma-110306095217-phpapp02&amp;stripped_title=rvm-and-ruby-interpreters-rsc-roma-032011&amp;userName=vjt" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="660" height="551"></embed>
-</object></div>
-  
-  <div class="details">
-    Posted at 18PM on 03/06/11 | 
-    <a href="2011/3/6/rome-rsc-2011.html#comments" title="1 comment">1 comment</a> |
-    Filed Under: <a class="selected" href="development.html" title="development">development</a> 
-  </div>
-</div>
-
-<div class="story">
-  <h1><a href="2011/1/4/bsd-onto-a-macmini-4-1-no-way.html" title="*BSD onto a MacMini 4,1? No way. :-(">*BSD onto a MacMini 4,1? No way. :-(</a></h1>
-  
-    <div style="float:right"><img src="assets/sindro.me/2011/1/4/mini-daemon.png" alt="" /></div>
-
-	<p>I spent the last two days trying to set up the Aluminium Mac Mini (rev. 4,1) as a home <span class="caps">NAS</span> server with encrypted storage, and I wanted a <span class="caps">BSD</span> system on it. There&#8217;s already an embedded OpenBSD onto the soekris gateway, and another companion would have been nice. :-)</p>
-
-
-	<p>Guess what, there&#8217;s no way out:</p>
+    <p style="text-align:center;"><iframe width="640" height="360" src="https://www.youtube.com/embed/Frd0CPYuZgU?rel=0" frameborder="0" allowfullscreen></iframe></p>
 
 
 	<ul>
-	<li>FreeBSD 8.1 doesn&#8217;t complete the boot process, due to <a href="http://wiki.freebsd.org/AppleMacbook">a bug in the <span class="caps">SATA</span> chipset, <span class="caps">NV MCP89</span></a>;</li>
-		<li>FreeBSD 8.2-RC1 boots but, due to the same bug, doesn&#8217;t recognize any <span class="caps">SATA</span> drive nor any <span class="caps">USB</span> umass device;</li>
-		<li>NetBSD 5.1 boots fine, handles <span class="caps">SATA</span> disks via the generic pciide driver (no <span class="caps">DMA</span>, thus quite slow) but, unluckily, doesn&#8217;t handle the <span class="caps">BCM57762</span> ethernet controller. I tried with quick and dirty patches to <a href="http://code.bsd64.org/cvsweb/netbsd/src/sys/dev/pci/if_bge.c">bring the bge driver up to date with -current</a>, but still no luck: the <span class="caps">MII</span> link detection works, the card transmits but doesn&#8217;t receive. The sdmmc controller as well works with -current but not with 5.1-RELEASE. <span class="caps">ACPI</span> works correctly;</li>
-		<li>OpenBSD 4.8 boots, can access the <span class="caps">SATA</span> drives without <span class="caps">DMA</span>, and recognizes the bge network card, but exposes the very same behaviour as NetBSD 5.1 with the -current driver fitted in;</li>
-		<li>DragonFlyBSD 2.8.2 doesn&#8217;t even enter kernel mode, I suspect due to <span class="caps">ACPI</span> bugs;</li>
-		<li>PureDarwin didn&#8217;t inspire me too much, due to the many <a href="http://www.puredarwin.org/blockers">blocking issues</a>.</li>
+	<li>The <strong>sad</strong> conclusion: &laquo;humans are such herd animals&raquo;</li>
 	</ul>
 
 
-	<p>All of them support encrypted storage, I built up a <a href="http://netbsd.gw.com/cgi-bin/man-cgi?cgd+4+NetBSD-5.0">NetBSD <span class="caps">CGD</span></a> disk flawlessly onto dk wedges; FreeBSD has got the interesting <a href="http://www.freebsd.org/doc/handbook/disks-encrypting.html">gbde(8) and geli(8)</a> GEOM-based tools that I wasn&#8217;t able to test, while OpenBSD supports crypto via a <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=softraid&amp;sektion=4">softraid personality</a>. Unluckily, support for the, nowadays, exotic Apple hardware is a no-brainer.</p>
+	<ul>
+	<li>The <strong>good</strong> conclusion: &laquo;virality has always existed, it&#8217;s not an invention of Web2.0. Social networking is just a powerful tool for everyone that wants to change the world&raquo;</li>
+	</ul>
 
 
-	<p>So, with no other way left open, I decided to go the Linux route, using the excellent <a href="http://sysresccd.org/">sysresccd</a>, that I elect today as the successor of the <a href="http://rescuecd.pld-linux.org/">pld-linux rescuecd</a>, companion of endless system recoveries :-). Anyway, you&#8217;ll need the 2.6.36 kernel to make it boot onto the MacMini4,1, due to the aforementioned <span class="caps">MCP89</span> bug. Ethernet card and SD card reader work out-of-the-box.</p>
+	<ul>
+	<li>The <strong>mean</strong> conclusion: &laquo;how much does it take to get people from their computers to the real world after a virtual &#8220;heads up&#8221; by some &#8220;dancing man&#8221;?&raquo;</li>
+	</ul>
 
 
-	<p>Now, I&#8217;m playing with <a href="http://code.google.com/p/cryptsetup/wiki/FrequentlyAskedQuestions"><span class="caps">LUKS</span></a> and, while I&#8217;m not that competent in cryptography, looks like it is more evolved than the *BSD counterparts, and anyway it is more versatile tool than the tools in OpenBSD and NetBSD. On the latter, having to set up <span class="caps">GPT</span> and DK Wedges to make the <span class="caps">CGD</span> and synch <span class="caps">MBR</span> and Disklabel to make the boot loader work (yuck!), everything coupled with rEFIt is quite a mess&#8482;. There&#8217;s a <a href="http://www.netbsd.org/~mishka/gptboot/howto.html"><span class="caps">GPT</span> loader for NetBSD</a> but I hadn&#8217;t a chance to try it out.</p>
-
-
-	<p>I hope this information is useful to anyone who tries a similar adventure, comments are appreciated :-).</p>
+	<ul>
+	<li>More conclusions: read the comments on this video <a href="http://www.reddit.com/r/videos/comments/8ol48/one_crazy_guy_dancing_alone_starts_a_huge_party/">on reddit</a> and <a href="http://www.youtube.com/watch?v=Frd0CPYuZgU">on youtube</a>.</li>
+	</ul>
   
   <div class="details">
-    Posted at 18PM on 01/04/11 | 
-    <a href="2011/1/4/bsd-onto-a-macmini-4-1-no-way.html#comments" title="0 comments">0 comments</a> |
-    Filed Under: <a class="selected" href="development.html" title="development">development</a> 
+    Posted at 10AM on 05/31/09 | 
+    <a href="2009/5/31/it-just-takes-one-person-to-get-the-party-started.html#comments" title="0 comments">0 comments</a> |
+    Filed Under: <a href="number-42.html" title="number 42">number 42</a> 
   </div>
 </div>
 
 <div class="story">
-  <h1><a href="2010/9/16/learning-about-world-cultures-via-google-autocomplete.html" title="Learning about world cultures via Google Autocomplete">Learning about world cultures via Google Autocomplete</a></h1>
+  <h1><a href="2009/5/28/e-privacy-2009-towards-global-control.html" title="E-Privacy 2009: Towards Global Control">E-Privacy 2009: Towards Global Control</a></h1>
   
-    <p>Out of curiosity, I was looking how a browser interacts with the Google Instant backend. While looking the <span class="caps">HTTP</span> exchanges via Firebug, I first asked myself why they&#8217;re encoding <span class="caps">HTML</span> and JS with <code>\xYY</code> escape sequences, then why the very same JS functions are sent back and forth on every request, and later I stumbled upon the <code>google.com/s?q=QUERY</code> JSONp service.</p>
+    <h2>The Recipe</h2>
 
 
-	<p>Give it a query, and it&#8217;ll return the suggested related phrases that are used to build the menu under the search input while using suggestions and/or instant (didn&#8217;t dig too much in all the other parameters).</p>
+<div style="float:right;text-align:center;position:relative;right:40px;">
+<a href="http://winstonsmith.info/"><img src="assets/sindro.me/2009/5/27/pws-logo.png" alt="" /></a><br/><br/>
+<a href="http://e-privacy.winstonsmith.info/"><img src="assets/sindro.me/2009/5/27/pe2009small.png" alt="" /></a>
+</div>
+
+	<h3>Ingredients</h3>
 
 
-	<p>Anyway, what&#8217;s interesting is that, of course, the suggestions are customized on a per-country basis. To show the differences explicitly let&#8217;s ask the service the simplest query possible, <code>a</code>:</p>
+	<ul>
+	<li>The 2009 social environment</li>
+		<li>A bunch of <a href="http://www.delirandom.net/category/en/">ha</a><a href="http://recursiva.org/">ck</a><a href="http://fabio.pietrosanti.it/Who am i.html">er</a><a href="http://tramaci.org/">s</a></li>
+		<li><a href="http://studiomazzolari.wordpress.com/">Some</a> <a href="http://www.studiozallone.it/Italian/ChiSiamo.asp">competent</a> <a href="http://www.guidoscorza.it/">lawyers</a></li>
+		<li>A Google <a href="http://www.linkedin.com/in/marcopancini">Spokesman</a></li>
+		<li>The <a href="http://bba.winstonsmith.com/">Big Brother Awards</a></li>
+		<li>A consistent amount of paranoia</li>
+	</ul>
 
 
-	<p>For Italy you&#8217;ll get:</p>
+	<h3>Preparation</h3>
 
 
-<pre><code>
-$ curl http://www.google.it/s?q=a
-window.google.ac.h(["a",[["ansa","","0"],
-["alice","","1"],["alitalia","","2"],["alice mail","","3"],
-["apple","","4"],["agenzia delle entrate","","5"],
-["audi","","6"],["aci","","7"],["autoscout","","8"],
-["atm","","9"]],"","","","","",{}])
-</code></pre>
-
-	<p>hum, let&#8217;s scrap the JSONp and parameters out:</p>
+	<p>Take the whole social environment, utterly unprepared to the media \(r)evolution happening in the last years, and let the <a href="http://catb.org/jargon/">hackers</a> observe and talk/write about it. Bring in the lawyers, and let them recognize that &#8220;Houston! We&#8217;ve got a problem!&#8221;, whilst also they define it via lawspeak. Ask questions, and participate to interesting debates.</p>
 
 
-<pre><code>
-$ curl -s http://www.google.it/s?q=a | ruby -rjson -ne 'puts JSON($_[19..-2])[1].map(&#38;:first).join(", ")'            
-ansa, alice, alitalia, alice mail, apple, agenzia delle entrate, audi, aci, autoscout, atm
-</code></pre>
-
-	<p>For the US you&#8217;ll get:</p>
+	<p>Now, deliver the 2007 big brother award to the <a href="http://twitter.com/vjt/status/1881013015">Google Representative</a>, let the sun dive <a href="http://www.flickr.com/photos/23589794@N08/3427669764/">in the hills</a>, add a noticeable amount of <a href="http://en.wikipedia.org/wiki/Chianti">Tuscany red wine</a>, and get ready for the next day. Let the paranoia flow, while the hackers show how you can be traced and found via the cellular network and spied via wifi-networked cameras placed there <em>for your safety</em>.</p>
 
 
-<pre><code>
-amazon, aol, att, apple, american airlines, abc, ask.com, amtrak, addicting games, aim
-</code></pre>
-
-	<p>UK:</p>
+	<p>Watch the undelivered Big Brother Awards 2009 sit on the speakers&#8217; desk and suddenly <a href="http://cgi.ebay.it/ws/eBayISAPI.dll?ViewItem&amp;item=120425399453">put on sale</a> <a href="http://cgi.ebay.it/ws/eBayISAPI.dll?ViewItem&amp;item=120425394215">on ebay</a>, and go back home, where you read about, and watch, a <a href="http://tv.repubblica.it/copertina/berlusconi-nei-tg-appare-il-logo/33161?video">video-edited interview to the italian PM</a>.</p>
 
 
-<pre><code>
-argos, amazon, asda, asos, autotrader, aa route planner, aol, apple, amazon uk, aqa
-</code></pre>
-
-	<p>Ireland:</p>
-
-
-<pre><code>
-aer lingus, aib, argos, amazon.co.uk, argos.ie, asos, aa route planner, amazon, aldi, aib internet banking
-</code></pre>
-
-	<p>Lastly, because I&#8217;ve been there lately and it has been a profound experience, Cuba:</p>
-
-
-<pre><code>
-asus, antonio maceo, amor, amigos, ain, antivirus, avira, alba, aduana, as
-</code></pre>
-
-	<p>I&#8217;m sure <a href="http://nhaima.org/">@nhaima</a> is smiling while seeing these words, because hell yeah, over there they really google antivirus software (avira is one of them) a lot because it&#8217;s a world without the Internet, thus without free software: you&#8217;re condemned in using Windows stuff, and you take what you pay for. Antonio Maceo has been an hero of the 19th century revolution, and it&#8217;s in the heart of Cuban people. Amor, Amigos! :-)</p>
-
-
-	<p>Anyway, looks like that simple queries like this really give an insight on what a population thinks and/or needs, because they&#8217;re surely generated by the search trends, thus are the &#8220;most searched words&#8221;. Am I discovering hot water? Maybe, but it was funny to rediscover it. Just make sure not to hammer the <code>/s</code> service with too many requests, because they&#8217;ll anyway be handled by the same cluster of machines, thus you&#8217;ll be banned early (I&#8217;ve been :-p).</p>
+	<p>Put everything into the fridge, and give your brain two days to metabolize it. Then write it all <strong><span class="caps">LOUD</span></strong> [ .. ]</p>
+    <p class="read-on"><a href="2009/5/28/e-privacy-2009-towards-global-control.html#continue">continue reading &gt;&gt;&gt;</a></p>
   
   <div class="details">
-    Posted at 20PM on 09/16/10 | 
-    <a href="2010/9/16/learning-about-world-cultures-via-google-autocomplete.html#comments" title="0 comments">0 comments</a> |
-    Filed Under: <a class="selected" href="development.html" title="development">development</a> <a href="number-42.html" title="number 42">number 42</a> 
+    Posted at 13PM on 05/28/09 | 
+    <a href="2009/5/28/e-privacy-2009-towards-global-control.html#comments" title="1 comment">1 comment</a> |
+    Filed Under: <a class="selected" href="development.html" title="development">development</a> <a href="politics.html" title="politics">politics</a> 
   </div>
 </div>
 
 <div class="story">
-  <h1><a href="2010/8/5/panmind-at-ruby-social-club.html" title="Panmind spin-offs presented at Ruby Social Club Milan">Panmind spin-offs presented at Ruby Social Club Milan</a></h1>
+  <h1><a href="2009/5/26/the-best-way-to-begin-a-new-day.html" title="The best way to begin a new day">The best way to begin a new day</a></h1>
   
-    <p>On July 22nd 2010, <a href="http://mikamai.com/">Mikamai</a> hosted a <a href="http://blog.mikamai.com/2010/07/la-notte-del-ruby-social-club/">Ruby Social Club in Milan</a>, where nearly 50 people attended watching five speeches about Ruby, Web development and Startups. I was glad to be one of the speakers, and I presented a set of Rails plugins <a href="http://mind2mind.is/">we</a> spinned off from our latest (<big>and greatest</big>) project: <a href="http://panmind.org/">Panmind</a> (read more on <a href="http://panmind.org/about">the about page</a>) and released as Open Source on <a href="http://github.com/Panmind">GitHub</a>.</p>
-
-<p>The keynote is split in two parts: the first one explains <big>why</big> you should follow the sane software engineering principle of writing modular and interest-separated code and then <big>how</big> you could (and should) extract it from your Rails application by decoupling configuration and then prepare for the Open Source release, by writing documentation <big><strong>AND</strong></big> presenting to a Ruby event so, <strong>hopefully, someone else will write unit tests! :-)</strong>
-</p>
-
-<p>We released an <a href="http://github.com/panmind/ssl_helper">SSL helper</a> plugin that implements filters (like Rails' ssl_requirement) but also named route helpers: no more <code>&lt;%= url_for :protocol =&gt; 'https' %&gt;</code>! You'll have something like <code>plain_root_url</code> and <code>ssl_login_url</code> - like they were built into the framework.
-Then, a <a href="http://github.com/panmind/bigbro">Google Analytics</a> ultra-simple plugin, with <code>&lt;noscript&gt;</code> support, a couple of test helpers and an <a href="http://github.com/Panmind/bigbro/blob/master/js/jquery.analytics.js">embryo</a> of a JS Analytics framework - hopefully it'll evolve into a complete jQuery plugin. Then, a <a href="http://github.com/Panmind/recaptcha">ReCaptcha</a> interface, with AJAX validation support and eventually a <a href="http://github.com/Panmind/zendesk">Zendesk</a> interface for Rails.</p>
-
-<p>We released also more code on <a href="http://github.com/Panmind">Panmind's GitHub account</a>, including the nifty <a href="http://github.com/Panmind/jquery-ajax-nav">AJAX Navigation Framework</a> that implements all the boilerplate code for the ultra-fast AJAX navigation of panmind <a href="http://panmind.org/search" target="_blank">contents</a> and <a href="http://panmind.org/tour/collaborate" target="_blank">projects</a>.</p>
-
-<p>The keynote follows, you can download it in PDF (no <a href="2010/8/4/on-the-iphone-pdf-and-kernel-exploit.html">exploits, I swear!</a> :-) <a href="assets/sindro.me/2010/8/5/Panmind_at_Ruby_Social_Club_Milano.pdf">from this link</a> or view/comment it on slideshare <a href="http://www.slideshare.net/panmind/panmind-open-source-releases-presented">here</a>.</p>
-
-<p>Final words: check out <a href="http://blog.mikamai.com/2010/07/la-notte-del-ruby-social-club/">mikamai blog post on the Ruby Social Club</a> to read the other keynotes (I will, hopefully, update this post with sum-ups of them when time permits :-)) and <a href="http://twitter.com/panmind">say hello on twitter</a> or <a href="http://github.com/Panmind">on GitHub</a> if you're interested in contributing our open source projects or <big><a href="http://panmind.org/jobs">you want to work with us</a></big>.</p>
-
-<div style="width:100%; text-align: center;" id="__ss_4819832">
-  <object id="__sse4819832" width="660" height="551">
-    <param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=panmindatrubysocialclubmilano-100722183932-phpapp01&amp;rel=0&amp;stripped_title=panmind-open-source-releases-presented" />
-    <param name="allowFullScreen" value="true"/>
-    <param name="allowScriptAccess" value="always"/>
-    <embed name="__sse4819832" src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=panmindatrubysocialclubmilano-100722183932-phpapp01&amp;rel=0&amp;stripped_title=panmind-open-source-releases-presented" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="660" height="551"></embed>
-  </object>
-</div>
-
-<p><strong>PS.</strong> The slideshare flash-based player sucks by design and relies on its app servers, on its CDN and on the S3 CDN to work properly - if any of these breaks, the whole thing will break. If you find it broken, download a <a href="assets/sindro.me/2010/8/5/Panmind_at_Ruby_Social_Club_Milano.pdf">PDF version of this keynote <big>here</big></a>.</p>
-
-
-
+    <pre><code>
+XFS internal error XFS_WANT_CORRUPTED_RETURN at line 295 of file fs/xfs/xfs_alloc.c.  Caller 0xc018066c
+ [&lt;c017fed0&gt;] xfs_alloc_fixup_trees+0x1b0/0x2e0
+ [&lt;c018066c&gt;] xfs_alloc_ag_vextent_near+0x31c/0x9c0
+ [&lt;c018066c&gt;] xfs_alloc_ag_vextent_near+0x31c/0x9c0
+ [&lt;c0180187&gt;] xfs_alloc_ag_vextent+0xf7/0x100
+ [&lt;c01824fe&gt;] xfs_alloc_vextent+0x35e/0x420
+ [&lt;c019015d&gt;] xfs_bmap_alloc+0x80d/0x12b0
+ [&lt;c0111254&gt;] try_to_wake_up+0xa4/0xc0
+ [&lt;c02cf248&gt;] schedule+0x308/0x5c0
+ [&lt;c01939c4&gt;] xfs_bmapi+0x514/0x1470
+ [&lt;c0130069&gt;] find_lock_page+0x29/0xe0
+ [&lt;c013013c&gt;] find_or_create_page+0x1c/0xb0
+ [&lt;c01d9116&gt;] kmem_zone_zalloc+0x26/0x50
+ [&lt;c01a2296&gt;] xfs_dir2_grow_inode+0xf6/0x3c0
+</code></pre>
+    <p class="read-on"><a href="2009/5/26/the-best-way-to-begin-a-new-day.html#continue">continue reading &gt;&gt;&gt;</a></p>
   
   <div class="details">
-    Posted at 16PM on 08/05/10 | 
-    <a href="2010/8/5/panmind-at-ruby-social-club.html#comments" title="2 comments">2 comments</a> |
-    Filed Under: <a class="selected" href="development.html" title="development">development</a> 
+    Posted at 10AM on 05/26/09 | 
+    <a href="2009/5/26/the-best-way-to-begin-a-new-day.html#comments" title="0 comments">0 comments</a> |
+    Filed Under: <a href="number-42.html" title="number 42">number 42</a> 
   </div>
 </div>
 
 <div class="story">
-  <h1><a href="2010/8/4/on-the-iphone-pdf-and-kernel-exploit.html" title="On the iPhone PDF and kernel exploit">On the iPhone PDF and kernel exploit</a></h1>
+  <h1><a href="2009/5/18/girl-geeks-dinner-workshop-apple-store-rome.html" title="Girl Geek Dinners Workshop @Apple Store, 16 May 2009, Rome">Girl Geek Dinners Workshop @Apple Store, 16 May 2009, Rome</a></h1>
   
-    <div style="float:left; margin-right: 20px"><img src="assets/sindro.me/2010/8/5/jailbreakme.jpg" alt="" /></div>
-
-	<p>As most of you already know, there are two <a href="http://www.vupen.com/english/advisories/2010/1992">open, critical vulnerabilities</a> in iPhone OS versions from 3.x up. The first one resides in the Compact Font Format component of the <span class="caps">PDF</span> renderer and the second one an error in the kernel, allowing attackers to bypass the sandbox (SeatBelt) inside which applications are run on the iPhone.</p>
+    <p>&laquo;<cite>Women! The <a href="http://www.flickr.com/photos/matteorocchi/3401964231/">knife grinder</a> is here!</cite>&raquo; &#8211; Apart from funny jokes ;) the italian <a href="http://www.apple.com/it/retail/romaest/">Apple Store</a> together with <a href="http://www.girlgeekdinnersroma.com/">Girl Geek Dinners Roma</a> organized on May 16, 2009, a workshop about mobile lifestyle (focusing on the <a href="http://www.apple.com/iphone">iPhone</a>, of course).</p>
 
 
-	<p>The two vulnerabilities were discovered by <a href="http://twitter.com/comex">@comex</a>, <a href="http://twitter.com/chpwn">@chpwn</a> and other people.</p>
+<div style="float:left; margin:6px 10px 0 0;"><a href="http://www.girlgeekdinnersroma.com/"><img src="assets/sindro.me/2009/5/18/ggd-roma.jpg" alt="" /></a></div>
+
+	<p>Let&#8217;s start from the beginning: what are the <a href="http://girlgeekdinners.com/">Girl Geek Dinners</a>? <a href="http://www.linkedin.com/pub/linda-serra/9/461/756">Linda</a> explained to the audience (nearly 20 people) that a <a href="http://en.wikipedia.org/wiki/Geek">geek</a> is a person passionate about technology in a broader sense: the <span class="caps">GGD</span> is a group devoted to aggregate women interested about the internet, new medias and technologic lifestyles. Women are often <a href="http://www.girlgeekdinnersitalia.com/2009/04/donne-e-mondo-del-lavoro-qualcosa-sta-cambiando-lo-stato-dell’arte/">underestimated</a> in <a href="http://wooga.drbacchus.com/geek-arrogance-and-chauvinism">geek communities</a>, and this embarassing <a href="http://www.cs.toronto.edu/~gvwilson/articles/open-source-cold-shoulder-2004.pdf">clichè</a> generated <a href="http://groups.google.com/group/boston-rubygroup/browse_thread/thread/9bae949476720e32/8f5750437981806b?hl=en&amp;ie=UTF-8&amp;oe=UTF-8&amp;q=women+ruby+community">a lot of</a> <a href="http://stackoverflow.com/questions/305175/what-can-we-do-to-encourage-more-women-to-join-the-programming-field">discussion</a> in the past, and it&#8217;s still unsolved (in my opinion).</p>
 
 
-	<p>Only few weeks later the <a href="http://www.kb.cert.org/vuls/id/940193">.lnk design flaw</a> on windows (guys, you&#8217;re using <code>LoadLibraryW</code> to load a damn icon!), these iPhone OS vulnerabilities are even more interesting, because of the way the release is being handled by the <em>community</em> and the <em>vendor</em>.</p>
+<div style="clear:left"></div>
+
+	<p>The <a href="http://www.girlgeekdinnersitalia.com/"><span class="caps">GGD</span> italian group</a> was born in 2007 in Milan, and then arrived to Rome in 2008, and is also present in Bologna and in the <a href="http://en.wikipedia.org/wiki/Marche">Marche</a> and <a href="http://en.wikipedia.org/wiki/Emilia-Romagna">Emilia-Romagna</a> states.</p>
 
 
-	<p>I spent 3 hours last night trying to find detalied information about the bug, and except confused (and propagandistic) <em>blog posts</em> the only bit of information is in this <em><a href="http://twitter.com/chpwn/statuses/20173810590">tweet</a></em>, and in the actual pdf exploit running on <a href="http://www.jailbreakme.com/_/" target="_blank">jailbreakme.com</a>. Where are the security lists posts? Where is the <span class="caps">CVE</span>? Even the <span class="caps">CERT</span> still doesn&#8217;t say anything about this vulnerability.</p>
-
-
-	<p>There&#8217;s something <big>terribly wrong</big> going on: the <a href="http://en.wikipedia.org/wiki/Cat_and_mouse">cat-and-mouse-game</a> that is making the <a href="http://blog.iphone-dev.org/">iphone-dev team researchers</a> not disclose any of the vulnerabilities they find has become very dangerous for end users: an exploit that allows remote code execution and jail escape without no interaction whatsoever by the user, carried via something that&#8217;s used to consider &#8220;safe&#8221; (a <span class="caps">PDF</span> file) is what is called a <em>critical</em> hole; while the exploit that uses it is called a <em>0-day</em>. It&#8217;s the first time in my life I see a 0-day packaged and distributed explicitly via a web site.</p>
-
-
-	<p>Anyway, the <big>dev-team researchers did not have any other choice</big>: if they had communicated with Apple prior to public disclosure, we wouldn&#8217;t have had a so easy jailbreak vector; <span class="caps">OTOH</span> now we have vulnerable phones and pads that can be very easily exploited by mailcious parties. It&#8217;s also funny that in order to be warned when a <span class="caps">PDF</span> is about to be loaded thus mitigating the risk, <strong>you should jailbreak</strong> your device and install the <a href="http://9to5mac.com/pdf-loading-warner-on-cydia" target="_blank"><span class="caps">PDF</span> Loading Warner</a> afterhand.</p>
-
-
-	<p><big>My stand on this is that the real problem is Apple itself</big>: they&#8217;ve crated a <a href="http://en.wikipedia.org/wiki/Walled_garden_(technology)">walled garden</a>, outside any legislation, where they&#8217;re the absolute god and give and take whatever they want. <em>It&#8217;s not gonna work forever</em>. I really hope that people will understand think that <big>it&#8217;s not the hackers&#8217; fault, rather it&#8217;s the totalitarian companies&#8217; fault</big>, for not giving us control over the devices we buy from them. Hackers are only trying to liberate them, and it&#8217;s <a href="http://www.eff.org/press/archives/2010/07/26">fair use under the <span class="caps">DMCA</span>, after all</a>.</p>
-
-
-	<p><strong><span class="caps">UPDATE 2010</span>-10-05</strong>: I&#8217;ve posted a summary of this bug on the <a href="http://seclists.org/fulldisclosure/2010/Aug/37">full-disclosure mailing list</a> &#8211; you know, if it&#8217;s not on FD no one would think about it :-).</p>
+	<p>So, the <span class="caps">GGD</span> group tries to generate a &#8220;critical mass&#8221; of geek women, to abolish a stereotype that &#8220;computer programmers / power users&#8221; are only men: in <span class="caps">GGD</span> events boys listen and girls talk, [ .. ]</p>
+    <p class="read-on"><a href="2009/5/18/girl-geeks-dinner-workshop-apple-store-rome.html#continue">continue reading &gt;&gt;&gt;</a></p>
   
   <div class="details">
-    Posted at 12PM on 08/04/10 | 
-    <a href="2010/8/4/on-the-iphone-pdf-and-kernel-exploit.html#comments" title="0 comments">0 comments</a> |
+    Posted at 15PM on 05/18/09 | 
+    <a href="2009/5/18/girl-geeks-dinner-workshop-apple-store-rome.html#comments" title="0 comments">0 comments</a> |
+    Filed Under: <a href="number-42.html" title="number 42">number 42</a> 
+  </div>
+</div>
+
+<div class="story">
+  <h1><a href="2009/5/16/the-conceptual-foundations-and-the-economics-network-neutrality-part-2.html" title="The conceptual foundations and the economics network neutrality [Part 2] - 14 May 2009, Rome">The conceptual foundations and the economics network neutrality [Part 2] - 14 May 2009, Rome</a></h1>
+  
+    <p>This is the second part of my recap of the <a href="http://www.nnsquad.it/">nnsquad.it</a> convention held in Rome on May 14, 2009, and hosted by the <span class="caps">ICT</span> consultants foundation <a href="http://www.fub.it/">Fondazione Ugo Bordoni</a>.</p>
+
+
+	<p>In the <a href="2009/5/16/the-conceptual-foundations-and-the-economics-network-neutrality-rome.html">first part</a> I described the morning session, dedicated to the definition of Network neutrality, and how global economics  can cope with it. The afternoon was dedicated to more technical talks, and I had the occasion to hear telcos spokesmen remarks over the current situation and possible future developments.</p>
+
+
+	<p style="text-align:center;"><img src="assets/sindro.me/2009/5/16/rospigliosi-palace-statues-room-nnsquad-convention.jpg" alt="" /></p>
+
+
+	<p>The first speech started at 2.15PM and was held by Prof. <a href="http://www.sede-cremona.polimi.it/organizzazione/dettagli_docente.php?id_nav=6582&amp;aa=2008&amp;sede_cds=cr&amp;k_docente=176618&amp;n_docente=TRECORDI%20VITTORIO">Vittorio Trecordi</a> (slides available <a href="http://www.fub.it/files/Slide_Trecordi_14_05_09.pdf">here</a>). He introduced it by stating that net neutrality could possibly contrast with the economic development and security assessment, because of the wiretapping needed for the latter, tap that is strongly against [ .. ]</p>
+    <p class="read-on"><a href="2009/5/16/the-conceptual-foundations-and-the-economics-network-neutrality-part-2.html#continue">continue reading &gt;&gt;&gt;</a></p>
+  
+  <div class="details">
+    Posted at 01AM on 05/17/09 | 
+    <a href="2009/5/16/the-conceptual-foundations-and-the-economics-network-neutrality-part-2.html#comments" title="2 comments">2 comments</a> |
     Filed Under: <a href="politics.html" title="politics">politics</a> 
   </div>
 </div>
 
 <div class="story">
-  <h1><a href="2010/5/11/spent-my-day-on-erlang-ruby-marshal-today.html" title="Spent my day on Erlang-Ruby-Marshal today ;-)">Spent my day on Erlang-Ruby-Marshal today ;-)</a></h1>
+  <h1><a href="2009/5/16/the-conceptual-foundations-and-the-economics-network-neutrality-rome.html" title="The conceptual foundations and the economics network neutrality [Part 1] - 14 May 2009, Rome">The conceptual foundations and the economics network neutrality [Part 1] - 14 May 2009, Rome</a></h1>
   
-    <div style="float:right; margin-right:40px"><img src="http://www.erlang.org/images/erlang-logo.png" /></div>
+    <p><a href="http://www.fub.it/events/seminari/neutralitadellareteeaspettisocioeconomici">http://www.fub.it/events/seminari/neutralitadellareteeaspettisocioeconomici</a></p>
 
-	<p>In a nutshell, it adds support for unmarshaling 1.9 strings, and implements the last missing type (<code>TYPE_LINK</code>) that was missing from the code. Tests still lack, can someone <a href="http://github.com/vjt/erlang-ruby-marshal">help</a> ? :-)</p>
+
+	<p><a href="http://www.nnsquad.it/">http://www.nnsquad.it/</a></p>
+
+
+	<h2>Neutrality &#8211; <em>&#8220;Economy is dematerializing&#8221;</em></h2>
+
+
+	<p>Solicited by a Facebook message sent to all the members of the <a href="http://www.facebook.com/group.php?gid=56353912528">nnsquad.it &#8211; for a neutral Internet</a> members on 6 May 2009, I stumbled upon this interesting event I had the occasion to participate, held in the <a href="http://en.wikipedia.org/wiki/Palazzo_Pallavicini-Rospigliosi">17th century Rospigliosi palace</a> in the heart of <a href="http://en.wikipedia.org/wiki/Rome">Rome</a>.</p>
+
+
+	<p style="text-align:center;"><img src="assets/sindro.me/2009/5/15/IMG_0261.jpg" alt="" /></p>
+
+
+	<p style="text-align:right;"><em>In this photo: <a href="http://kennethrcarter.com/vita/">Kenneth Carter</a> and <a href="http://blog.quintarelli.it/">Stefano Quintarelli</a></em></p>
+
+
+	<p>The preface looked pretty good: professors, Ph.Ds, telco spokesmen and politicians speaking about the internet, its inborn freedom, and how to cope with this in a society where security measures are <a href="http://sniffo.org/node/22">constantly increasing</a>, and as such contrast in a virtual world with no barriers whatsoever. Furthermore, it&#8217;s a virtual arena in which everything can be free, <a href="http://thepiratebay.org/">not only information</a>, and people is becoming accustomed to it [ .. ]</p>
+    <p class="read-on"><a href="2009/5/16/the-conceptual-foundations-and-the-economics-network-neutrality-rome.html#continue">continue reading &gt;&gt;&gt;</a></p>
+  
+  <div class="details">
+    Posted at 02AM on 05/16/09 | 
+    <a href="2009/5/16/the-conceptual-foundations-and-the-economics-network-neutrality-rome.html#comments" title="0 comments">0 comments</a> |
+    Filed Under: <a href="politics.html" title="politics">politics</a> 
+  </div>
+</div>
+
+<div class="story">
+  <h1><a href="2009/4/26/facebook-developers-garage-2009-milan-italy.html" title="Facebook Developer Garage 2009, Milan (Italy)">Facebook Developer Garage 2009, Milan (Italy)</a></h1>
+  
+    <div style="float:left; margin:8px 10px 4px 0;"><img src="assets/sindro.me/2009/4/26/logofb.jpg.jpg" alt="" /></div>
+
+	<p>This is my recap of the first <a href="http://fb.mikamai.com/programma/">italian facebook developer garage</a>, held in milan on <a href="http://www.facebook.com/event.php?eid=70473476888">April 23, 2009</a>, and hosted by <a href="http://mikamai.com/">mikamai</a>. The morning has been dedicated to developer sessions, the afternoon to marketing &#38; communication ones. Some videos of the event are available <a href="http://qik.com/istintoweb">here</a>.</p>
+
+
+	<h1>Morning: developer session</h1>
+
+
+	<p>The first talk was held by <a href="http://www.facebook.com/people/James-Leszczenski/4800348">James Leszczenski</a>, facebook engineer, who presented the <a href="http://developers.facebook.com/connect.php">connect platform</a> vision, mission, and values. interesting, besides the talk, for user participation: the audience was deeply interested about <a href="http://wiki.developers.facebook.com/index.php/Authenticating_Users_with_Facebook_Connect">which information they get</a> from facebook, <a href="http://wiki.developers.facebook.com/index.php/Facebook_Connect_Policies">how should they handle it</a>, and which means connect does provide to <a href="http://wiki.developers.facebook.com/index.php/Linking_Accounts_and_Finding_Friends">match identities and find friends</a> on an enabled web site.</p>
+
+
+	<p>Later I had the occasion to ask <a href="http://www.facebook.com/people/James-Leszczenski/4800348">James</a> about whether FB was inclined or not to adopt <a href="http://openid.net/">OpenID</a> as an authentication method: [ ... ]</p>
+    <p class="read-on"><a href="2009/4/26/facebook-developers-garage-2009-milan-italy.html#continue">continue reading &gt;&gt;&gt;</a></p>
+  
+  <div class="details">
+    Posted at 23PM on 04/26/09 | 
+    <a href="2009/4/26/facebook-developers-garage-2009-milan-italy.html#comments" title="1 comment">1 comment</a> |
+    Filed Under: <a class="selected" href="development.html" title="development">development</a> <a href="politics.html" title="politics">politics</a> 
+  </div>
+</div>
+
+<div class="story">
+  <h1><a href="2009/4/21/a-tweeting-geeky-parrot.html" title="A tweeting (geeky) parrot">A tweeting (geeky) parrot</a></h1>
+  
+    <p>I&#8217;m searching for a new pet. <a href="http://blog.nhaima.org/">We</a> already have two <a href="http://www.vimeo.com/3562500">lovely cats</a>, but after feeling how alive an house can be with many pets (after a beautiful night @ <a href="http://www.2spaghi.it/ristoranti/lazio/lt/latina/il-quadrato/">il quadrato</a> mansion), I&#8217;m thinking about having another one to grow and love.</p>
+
+
+	<p>But, what kind of geek am I, if I don&#8217;t add a nerdy bit to it? So, after the <a href="http://www.youtube.com/watch?v=205dHV55XWQ">brain twitter interface</a> about which we <a href="http://blog.wired.com/wiredscience/2009/04/braintweet.html">talked about so much</a> <a href="http://search.twitter.com/search?max_id=1578807214&amp;page=1&amp;q=brain+twitter+interface">in the last days</a>, this evening a quite random funny thought has stumbled into my mind: what about getting a <a href="http://en.wikipedia.org/wiki/African_Grey_Parrot">grey parrot</a>, grow it, learn it to talk, and letting him .. well, <strong>tweet</strong> his words using a speech recognition system put right aside its bar and linked to a twitter account? How weird would be that?! :D</p>
+
+
+	<p style="text-align:center;"><img src="assets/sindro.me/2009/4/21/tweeting_parrot.jpg" title="Tweeting parrot" alt="Tweeting parrot" /></p>
+
+
+	<p>Thinking deeply, the weirdest thing is that in 2009, a tweeting parrot makes me think about a &#8220;parrot with access to twitter&#8221; .. and not a bird emitting its natural verse. Am I overloaded by this social media thingie? Should I take some vacation?</p>
+
+
+	<p>I guess. But not right now. The first <a href="http://fb.mikamai.com/">italian facebook developer garage</a> is right two days away..</p>
+
+
+	<p>:)</p>
+
+
+	<p><cite>
+Image courtesy of @<a href="http://www.flickr.com/photos/ozjulian/2933796654/">ozjulian</a> on <a href="http://flickr.com/">flickr</a>, <span class="caps">CC BY</span>-NC-SA
+</cite></p>
+  
+  <div class="details">
+    Posted at 23PM on 04/21/09 | 
+    <a href="2009/4/21/a-tweeting-geeky-parrot.html#comments" title="1 comment">1 comment</a> |
+    Filed Under: <a href="number-42.html" title="number 42">number 42</a> 
+  </div>
+</div>
+
+<div class="story">
+  <h1><a href="2009/3/2/notice-to-all-employees-5.html" title="Notice to all employees">Notice to all employees</a></h1>
+  
+    <p>( As read on <a href="http://lists.grok.org.uk/pipermail/full-disclosure/2009-February/068153.html">full-disclosure</a> )</p>
 
 
 <pre><code>
-Added TYPE_LINK, needed because of how ruby 1.9 marshals strings.
+Subject: Notice to all employees
+Date: Tue, 24 Feb 2009 13:06:14 -0500
 
-In 1.9, Ruby marshals the string encoding in the binary output, and
-uses an Ivar construct (TYPE_IVAR) to wrap the string and adds an
-"encoding" instance variable (notice: without a leading @) whose
-value is the encoding itself.
+Dear employees,
 
-While the Ivar code worked correctly, the values of the encodings
-are actually *strings*, that are being reused via the TYPE_LINK
-construct, that wasn't implemented.
+Due to the current financial situation caused by the slowdown
+of the economy, Management has decided to implement a scheme
+to put workers of 40 years of age and above on early retirement.
 
-So, the get() and put() primitives are being used to store not
-only tuples {id, sym} for symbols, but now store either
+This scheme will be known as RAPE (Retire Aged People Early).
 
-  {{symbol, ID}, sym}
+Persons selected to be RAPED can apply to management to be eligible
+for the SHAFT scheme (Special Help After Forced Termination).
+Persons who have been RAPED and SHAFTED will be reviewed under the
+SCREW programme (Scheme Covering Retired Early Workers). A person
+may be RAPED once, SHAFTED twice and SCREWED as many times as
+Management deems appropriate.
 
-  OR
+Persons who have been RAPED can only get AIDS (Additional Income
+for Dependants &#38; Spouse) or HERPES (Half Eamings for Retired
+Personnel Early Severance).
 
-  {{value,  ID}, val}
+Obviously persons who have AIDS or HERPES will not be SHAFTED or
+SCREWED any further by Management.
 
-for the other types that use TYPE_LINK.
+Persons who are not RAPED and are staying on will receive as much
+SHIT (Special High Intensity Training) as possible. Management
+has always prided itself on the amount of SHIT it gives employees.
 
-By reading the ruby marshal.c source code, it looks like that MANY
-data types save their values in the arg-&gt;data hashtable, but by
-inspecting the binary marshal output of, e.g, an array of floats,
-links aren't used.
+Should you feel that you do not receive enough SHIT, please bring
+to the attention of your Supervisor. They have been trained to
+give you all the SHIT you can handle.
 
-Thus, in this unmarshaler, links are considered, for now, only for
-strings and regexes.
+Sincerely,
+
+The Management
 </code></pre>
 
-	<p>Fork me on GitHub: <a href="http://github.com/vjt/erlang-ruby-marshal">http://github.com/vjt/erlang-ruby-marshal</a></p>
+	<p>( I hope you enjoyed this :) There is also an <a href="http://seclists.org/fulldisclosure/2009/Mar/1"><span class="caps">USAF</span> version</a> from 1997 ).</p>
   
   <div class="details">
-    Posted at 19PM on 05/11/10 | 
-    <a href="2010/5/11/spent-my-day-on-erlang-ruby-marshal-today.html#comments" title="2 comments">2 comments</a> |
-    Filed Under: <a class="selected" href="development.html" title="development">development</a> 
+    Posted at 23PM on 03/02/09 | 
+    <a href="2009/3/2/notice-to-all-employees-5.html#comments" title="0 comments">0 comments</a> |
+    Filed Under: <a href="number-42.html" title="number 42">number 42</a> <a href="politics.html" title="politics">politics</a> 
   </div>
 </div>
 
@@ -461,14 +447,14 @@ strings and regexes.
     <li><a href="http://segmentation-fault.core-dumped.info/">Segmentation fault (core dumped)</a></li>
     <li><a href="http://www.linkedin.com/in/marcellobarnaba" target="_blank">LinkedIn</a></li>
     <li><a href="http://www.linkedin.com/profile/pdf?id=18152447&amp;pdfFileName=MarcelloBarnaba-Resume&amp;disablePdfCompression=true">Resum&egrave;</a></li>
-    <li><a href="http://github.com/vjt" target="_blank">github</a></li>
+    <li><a href="https://github.com/vjt" target="_blank">github</a></li>
     <li><a href="http://sourceforge.net/users/vjt" target="_blank">sourceforge profile</a></li>
-    <li><a href="https://plus.google.com/107382538213680942210?rel=author" target="_blank">google+</a></li>
+    <li><a href="https://plus.google.com/+MarcelloBarnaba" target="_blank">google+</a></li>
     <li><a href="https://facebook.com/vjt.rb" target="_blank">facebook</a></li>
-    <li><a href="http://delicious.com/vjt" target="_blank">delicious</a></li>
     <li><a href="http://devjt.deviantart.com/" target="_blank">deviantArt</a></li>
     <li><a href="http://last.fm/user/vjt" target="_blank">last.fm</a></li>
     <li><a href="http://en.wikipedia.org/wiki/User:Vjt" target="_blank">en.wikipedia user page</a></li>
+    <li><a href="http://delicious.com/vjt" target="_blank">delicious</a></li>
     <li><a href="http://barnaba.openssl.it/" target="_blank">historical college projects</a></li>
     <hr/>
     <li><a href="http://www.ifad.org/">Work - IFAD</a></li>
@@ -482,14 +468,6 @@ strings and regexes.
       <h2>Previously</h2>
       <ul class="dates">
         
-          <li><a href="2011/7/7/binding-port-80-for-your-development-application-server.html"><span class="date">07.11</span> Binding 80/TCP as non-root on your development server</a></li>
-        
-          <li><a href="2011/7/2/ph-neutral-0x7db.html"><span class="date">07.11</span> PH-Neutral 0x7db</a></li>
-        
-          <li><a href="2011/3/6/rome-rsc-2011.html"><span class="date">03.11</span> Rome RSC 2011</a></li>
-        
-          <li><a href="2011/1/4/bsd-onto-a-macmini-4-1-no-way.html"><span class="date">01.11</span> *BSD onto a MacMini 4,1? No way. :-(</a></li>
-        
           <li><a href="2010/9/16/learning-about-world-cultures-via-google-autocomplete.html"><span class="date">09.10</span> Learning about world cultures via Google Autocomplete</a></li>
         
           <li><a href="2010/8/5/panmind-at-ruby-social-club.html"><span class="date">08.10</span> Panmind spin-offs presented at Ruby Social Club Milan</a></li>
@@ -500,8 +478,6 @@ strings and regexes.
         
           <li><a href="2010/4/3/couchdb-invalid-utf8-json.html"><span class="date">04.10</span> CouchDB 0.11 Invalid UTF-8 JSON: Solved</a></li>
         
-          <li><a href="2010/1/11/hiatus.html"><span class="date">01.10</span> Hiatus</a></li>
-        
           <li><a href="2009/6/12/doing-something-is-always-better-than-doing-nothing.html"><span class="date">06.09</span> Doing something is always better than doing nothing</a></li>
         
           <li><a href="2009/6/4/rails3-better-faster-stronger.html"><span class="date">06.09</span> Rails3: Better, Faster, Stronger</a></li>
@@ -511,6 +487,16 @@ strings and regexes.
           <li><a href="2009/5/28/e-privacy-2009-towards-global-control.html"><span class="date">05.09</span> E-Privacy 2009: Towards Global Control</a></li>
         
           <li><a href="2009/5/26/the-best-way-to-begin-a-new-day.html"><span class="date">05.09</span> The best way to begin a new day</a></li>
+        
+          <li><a href="2009/5/18/girl-geeks-dinner-workshop-apple-store-rome.html"><span class="date">05.09</span> Girl Geek Dinners Workshop @Apple Store, 16 May 2009, Rome</a></li>
+        
+          <li><a href="2009/5/16/the-conceptual-foundations-and-the-economics-network-neutrality-part-2.html"><span class="date">05.09</span> The conceptual foundations and the economics network neutrality [Part 2] - 14 May 2009, Rome</a></li>
+        
+          <li><a href="2009/5/16/the-conceptual-foundations-and-the-economics-network-neutrality-rome.html"><span class="date">05.09</span> The conceptual foundations and the economics network neutrality [Part 1] - 14 May 2009, Rome</a></li>
+        
+          <li><a href="2009/4/26/facebook-developers-garage-2009-milan-italy.html"><span class="date">04.09</span> Facebook Developer Garage 2009, Milan (Italy)</a></li>
+        
+          <li><a href="2009/4/21/a-tweeting-geeky-parrot.html"><span class="date">04.09</span> A tweeting (geeky) parrot</a></li>
         
       </ul>
     </div>
@@ -558,5 +544,5 @@ strings and regexes.
   
 </body>
 
-<!-- Mirrored from sindro.me/?page=2 by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Oct 2016 10:19:58 GMT -->
+<!-- Mirrored from sindro.me/?page=2 by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 08 Oct 2016 00:40:01 GMT -->
 </html>
