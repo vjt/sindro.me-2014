@@ -134,11 +134,11 @@ ins {
   float: right;
   top: 0;
 }
-div.ads {
+div.share {
   float: right;
   width: 21%;
 }
-div.ads ins {
+div.share ins {
   right: 0;
 }
 .single-post ins {
@@ -504,7 +504,7 @@ label.text{
   top:0.8em;
   width:5em;
 }
-.formactions input[type=submit]{ 
+.formactions input[type=submit]{
   float:right;
   font-size:1.5em;
   margin:0.2em 0.8em;
@@ -573,7 +573,7 @@ ul.dates a, ul.counts a{
   display: block;
 	padding:0.5em 0;
 }
-ul.dates a:hover, ul.dates a:hover .date, ul.counts a:hover, ul.counts a:hover .count{ 
+ul.dates a:hover, ul.dates a:hover .date, ul.counts a:hover, ul.counts a:hover .count{
 	color:#FFF;
 }
 
