@@ -15,6 +15,7 @@
 <meta name="copyright" content="(C) 2009 Marcello Barnaba &lt;vjt&#x40;openssl.it&gt;" />
 <meta name="description" content=" Pushing git commit messages to lighthouse in a batch | If you use github-provided lighthouse integration, from the &#8220;Admin&#8221; pages of your git repository, you may have stumbled upon on a glitch: every changeset on lighthouse appears as done by the lighthouse user that configured the integration on github.	This happens because lighthouse uses the API token to link changeset authors to LH users, and that&#8217;s not good when you&#8217;re not alone committing :-).	A simple solution is to use a post-commit hook, as described here, but that&#8217;s not satisfactory because it means that every time you issue git commit on your console, the commit message will go public, and if you --amend or reset --soft the index you&#8217;ll have to browse to lighthouse and delete the changeset.	A much smarter solution is to push all changed revs when pushing them to github: I modified the original post-commit hook and installed it alongside the git command in $(dirname `which git`)/&lt;b&gt;git-lh&lt;/b&gt;. " />
 <meta name="keywords" content=" git,github,lighthouse,ruby,marcello,barnaba,blog,vjt,vjt@openssl.it,marcello.barnaba@gmail.com,ruby,rails,javascript,jquery,prototype,html,xhtml,programming,web,web2.0,technology,42,social,media,networking" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="shortcut icon" type="image/x-icon" href="../../../images/favicon.ico" />
 

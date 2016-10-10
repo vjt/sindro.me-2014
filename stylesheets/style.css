@@ -30,9 +30,7 @@ body{
 
 /* This class sets the width and position for all rows */
 .inside{
-	width:80%;
-	min-width:65em;
-	max-width:85em;
+	width:90%;
 	margin:0 auto;
 }
 
@@ -129,21 +127,9 @@ blockquote{
 }
 
 
-/* Google AdSense */
-ins {
-  float: right;
-  top: 0;
-}
 div.share {
   float: right;
-  width: 21%;
-}
-div.share ins {
-  right: 0;
-}
-.single-post ins {
-  right: -3%;
-  width: 70px !important;
+  text-align: right
 }
 
 #share-icons {
@@ -167,7 +153,6 @@ div.share ins {
 }
 
 #license {
-  text-align: center;
   border-bottom: 1px solid #333333;
   padding-bottom: 1em;
   margin-bottom: 3em;
@@ -207,11 +192,6 @@ div.share ins {
 #primary.twocol-stories .story{
 	width:75%;
 	margin:0 0 7% 1%;
-}
-* html #primary.twocol-stories .story{
-	margin-left:2%;
-}
-#primary.twocol-stories .first, * html #primary.twocol-stories .first{
 }
 
 #twitter {
@@ -614,3 +594,43 @@ ul.dates a:hover, ul.dates a:hover .date, ul.counts a:hover, ul.counts a:hover .
 #print-footer {
   display: none;
 }
+
+/*-----------------------------------------------------------------------------------------------
+  Responsive
+-----------------------------------------------------------------------------------------------*/
+@media screen and (max-width: 768px) {
+  #header .inside {
+    padding-bottom: 0;
+  }
+  #primary.twocol-stories .story {
+    width: 100%;
+    margin: 0;
+  }
+  div..share {
+    float: none;
+  }
+  pre {
+    white-space: normal;
+  }
+  #primary .navigation {
+    display: inline-block;
+    margin: 30px 10px;
+    width: 100%;
+  }
+  #primary .primary, #primary .secondary {
+    float: none;
+    width: 100%;
+  }
+  .story img, #primary img {
+    width: 100%;
+  }
+  #share-icons img, #license img {
+    width: auto !important;
+  }
+  #ancillary .block {
+    float: none;
+    margin: 0;
+    width: 100%;
+  }
+}
+
